@@ -1,6 +1,6 @@
 # Slice 1: elinsoft.co.uk static site (home, /dino, /privacy, 404)
 
-**Status:** built, awaiting review (2026-11-25)
+**Status:** built, reviewed and browser-checked (2026-11-25); waiting for the owner's local review before any push or deploy. Browser run: all 9 checks pass; Lighthouse mobile (local preview) / 0.95 perf, 1.00 a11y; /dino 1.00, 1.00. Home CLS 0.124 (above 0.1 "good").
 **Touches:** everything (first slice, new repo)
 
 The owner's brief below is the spec. Follow every line of it. The *Decisions* section settles what the brief leaves open; where they differ, the brief wins unless a decision says it overrides.
