@@ -1,6 +1,6 @@
 # elinsoft-site
 
-The company site for ELINSOFT LTD: `elinsoft.co.uk/` (home), `/dino` (scroll story), `/privacy`, 404. Astro 7, static output, plain CSS, vanilla TypeScript. Deployed by Cloudflare Pages git integration only (never deploy from a shell).
+The company site for ELINSOFT LTD: `elinsoft.co.uk/` (home), `/dino` (scroll story), `/privacy`, 404. Astro 7, static output, plain CSS, vanilla TypeScript. Deployed as the static-assets Worker `elinsoft-site` (`wrangler.jsonc`) by Cloudflare Workers Builds on merge to `main` only (never deploy from a shell).
 
 ## Commands
 

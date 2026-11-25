@@ -6,7 +6,7 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
 
-# Cloudflare Pages merges every matching rule and joins repeated headers with a comma, so the `/*` rule above sets no
+# Cloudflare static assets merge every matching rule and joins repeated headers with a comma, so the `/*` rule above sets no
 # Cache-Control. HTML pages get the short cache from their own rules; hashed assets get only the immutable one.
 /
   Cache-Control: public, max-age=0, must-revalidate
