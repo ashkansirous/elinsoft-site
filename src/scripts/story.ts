@@ -2,6 +2,7 @@
 // per frame and writes only opacity, transform and CSS custom properties. Layout values are cached on load and resize.
 
 const ANIMATED_CLASS = 'story--animated';
+const READY_ATTRIBUTE = 'data-story-ready';
 const SCENE_COUNT = 6;
 /** Half-width of the cross-fade at each scene boundary, in scenes. */
 const FADE = 0.12;
@@ -12,13 +13,9 @@ interface Layout {
   range: number;
 }
 
-function clamp01(value: number): number {
-  return Math.min(1, Math.max(0, value));
-}
-
 /** 0 before `from`, 1 after `to`, linear in between. */
 function ramp(value: number, from: number, to: number): number {
-  return clamp01((value - from) / (to - from));
+  return Math.min(1, Math.max(0, (value - from) / (to - from)));
 }
 
 /** Opacity of scene `index` when the story is `position` scenes in (0..6). */
@@ -26,10 +23,6 @@ function sceneOpacity(index: number, position: number): number {
   const fadeIn = index === 0 ? 1 : ramp(position, index - FADE, index + FADE);
   const fadeOut = index === SCENE_COUNT - 1 ? 1 : 1 - ramp(position, index + 1 - FADE, index + 1 + FADE);
   return Math.min(fadeIn, fadeOut);
-}
-
-function sceneEntering(index: number, position: number): number {
-  return index === 0 ? 1 : ramp(position, index - FADE, index + FADE);
 }
 
 class Story {
@@ -60,16 +53,27 @@ class Story {
     this.motion.addEventListener('change', () => this.syncMode());
     this.dots.forEach((dot, index) => dot.addEventListener('click', (event) => this.onDotClick(event, index)));
     this.syncMode();
-  }
-
-  private isAnimated(): boolean {
-    return document.documentElement.classList.contains(ANIMATED_CLASS);
+    if (this.motion.matches) this.scrollToHashScene();
   }
 
   private syncMode(): void {
     document.documentElement.classList.toggle(ANIMATED_CLASS, this.motion.matches);
     if (this.motion.matches) this.enable();
     else this.disable();
+    // Tells public/story-boot.js the script is running, so its timeout does not fall back to the stacked layout.
+    document.documentElement.setAttribute(READY_ATTRIBUTE, '');
+  }
+
+  /** In animated mode a `#scene-N` link points at an absolutely positioned scene, so map it onto the story's scroll. */
+  private scrollToHashScene(): void {
+    const match = /^#scene-(\d+)$/.exec(window.location.hash);
+    const index = match ? Number(match[1]) - 1 : -1;
+    if (index >= 0 && index < SCENE_COUNT) this.scrollToScene(index, 'auto');
+  }
+
+  private scrollToScene(index: number, behavior: ScrollBehavior): void {
+    const top = this.layout.trackTop + ((index + 0.5) / SCENE_COUNT) * this.layout.range;
+    window.scrollTo({ top, behavior });
   }
 
   private enable(): void {
@@ -124,11 +128,11 @@ class Story {
 
   private render(scroll: number): void {
     this.lastScroll = scroll;
-    const progress = clamp01((scroll - this.layout.trackTop) / this.layout.range);
+    const progress = ramp(scroll, this.layout.trackTop, this.layout.trackTop + this.layout.range);
     const position = progress * SCENE_COUNT;
     this.scenes.forEach((scene, index) => this.renderScene(scene, index, position));
     this.bgs.forEach((bg, index) => {
-      if (index > 0) bg.style.opacity = String(sceneEntering(index, position));
+      if (index > 0) bg.style.opacity = String(ramp(position, index - FADE, index + FADE));
     });
     this.markActive(Math.min(SCENE_COUNT - 1, Math.floor(position)));
   }
@@ -137,9 +141,9 @@ class Story {
     const opacity = sceneOpacity(index, position);
     scene.style.opacity = opacity.toFixed(3);
     if (opacity === 0) return;
-    const local = clamp01(position - index);
+    const local = ramp(position, index, index + 1);
     scene.style.setProperty('--sp', local.toFixed(4));
-    const entering = sceneEntering(index, position);
+    const entering = index === 0 ? 1 : ramp(position, index - FADE, index + FADE);
     const leaving = index === SCENE_COUNT - 1 ? 1 : 1 - ramp(position, index + 1 - FADE, index + 1 + FADE);
     const slide = (1 - entering) * TEXT_SLIDE_PX - (1 - leaving) * (TEXT_SLIDE_PX / 2);
     this.texts[index].style.transform = `translate3d(${slide.toFixed(1)}px,0,0)`;
@@ -155,10 +159,9 @@ class Story {
   }
 
   private onDotClick(event: MouseEvent, index: number): void {
-    if (!this.isAnimated()) return;
+    if (!document.documentElement.classList.contains(ANIMATED_CLASS)) return;
     event.preventDefault();
-    const target = this.layout.trackTop + ((index + 0.5) / SCENE_COUNT) * this.layout.range;
-    window.scrollTo({ top: target, behavior: 'smooth' });
+    this.scrollToScene(index, 'smooth');
   }
 
   private clearInlineStyles(): void {

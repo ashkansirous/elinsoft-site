@@ -3,13 +3,13 @@
 
 const EMBED_ORIGIN = 'https://www.youtube-nocookie.com/embed/';
 // YouTube video IDs are 11 characters of letters, digits, "-" and "_".
-const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{6,20}$/;
+const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/;
 
-function mountPlayer(button: HTMLButtonElement): void {
+/** Returns true once the iframe replaced the button; false (and changes nothing) for a bad ID or missing frame. */
+function mountPlayer(button: HTMLButtonElement): boolean {
   const id = button.dataset.videoId ?? '';
-  if (!VIDEO_ID_PATTERN.test(id)) return;
-  const frame = button.closest<HTMLElement>('[data-trailer]');
-  if (!frame) return;
+  if (!VIDEO_ID_PATTERN.test(id)) return false;
+  if (!button.closest<HTMLElement>('[data-trailer]')) return false;
   const iframe = document.createElement('iframe');
   iframe.src = `${EMBED_ORIGIN}${id}?autoplay=1`;
   iframe.title = 'Dino trailer';
@@ -19,7 +19,12 @@ function mountPlayer(button: HTMLButtonElement): void {
   button.replaceWith(iframe);
   iframe.focus();
   if (import.meta.env.DEV) console.debug('[trailer] iframe mounted after click');
+  return true;
 }
 
+// The listener stays until the iframe is mounted, so a click on an invalid ID does not use it up.
 const playButton = document.querySelector<HTMLButtonElement>('[data-trailer-play]');
-playButton?.addEventListener('click', () => mountPlayer(playButton), { once: true });
+function onPlayClick(): void {
+  if (playButton && mountPlayer(playButton)) playButton.removeEventListener('click', onPlayClick);
+}
+playButton?.addEventListener('click', onPlayClick);

@@ -98,7 +98,8 @@ const items = app === 'dino' ? dinoItems : rtstItems;
   }
 
   .stores--light .store--off {
-    background: rgba(255, 255, 255, 0.16);
+    /* A dark translucent fill keeps white text at 4.5:1 or better on the purple (#7B4DFF) panels. */
+    background: rgba(27, 21, 48, 0.55);
     color: #fff;
     border: 1.5px dashed rgba(255, 255, 255, 0.55);
   }

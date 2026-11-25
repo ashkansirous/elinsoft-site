@@ -10,6 +10,11 @@
   --bar-h: 60px;
 }
 
+/* Only /dino has a sticky bar, so only it needs anchor offsets (the home header is not sticky). */
+html:has(body.page-dino) {
+  scroll-padding-top: calc(var(--bar-h) + 16px);
+}
+
 .dino-bar {
   position: sticky;
   top: 0;
@@ -349,6 +354,8 @@ html.story--animated .scene__hint {
   width: var(--bw);
   height: calc(var(--bw) * 1.32);
   perspective: 1400px;
+  /* The shadow sits on this wrapper: a filter on the preserve-3d element below would flatten the page turn. */
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.35));
 }
 
 .book__inner {
@@ -356,7 +363,6 @@ html.story--animated .scene__hint {
   inset: 0;
   transform-style: preserve-3d;
   transform: translateX(calc(var(--open, 0) * var(--bw) * 0.5));
-  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.35));
 }
 
 .book__pages,
