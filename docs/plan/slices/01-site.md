@@ -1,6 +1,6 @@
 # Slice 1: elinsoft.co.uk static site (home, /dino, /privacy, 404)
 
-**Status:** in progress (2026-11-25)
+**Status:** built, awaiting review (2026-11-25)
 **Touches:** everything (first slice, new repo)
 
 The owner's brief below is the spec. Follow every line of it. The *Decisions* section settles what the brief leaves open; where they differ, the brief wins unless a decision says it overrides.
@@ -88,16 +88,31 @@ Never invent store URLs, numbers, reviews or download counts.
 When done, run the build, check both pages at 375px and 1440px, and give me: the list of placeholders still to fill, and anything you weren't sure about.
 
 ## Work items
-- [ ] Scaffold Astro 7 project, config, tsconfig, .nvmrc, .gitignore
-- [ ] Brand tokens CSS, Mark, Wordmark, Layout, Header, Footer, StoreButtons
-- [ ] `src/data/links.ts` placeholders
-- [ ] Home page sections 1-7
-- [ ] /dino scroll story + trailer + #get
-- [ ] /privacy (draft banner), 404
-- [ ] Icon script + generated favicon.svg, favicon-32.png, apple-touch-icon.png, og.png
-- [ ] `public/_headers`
-- [ ] README, CLAUDE.md, AGENTS.md
-- [ ] `npm run build` and `astro check` clean
+- [x] Scaffold Astro 7 project, config, tsconfig, .nvmrc, .gitignore
+- [x] Brand tokens CSS, Mark, Wordmark, Layout, Header, Footer, StoreButtons
+- [x] `src/data/links.ts` placeholders
+- [x] Home page sections 1-7
+- [x] /dino scroll story + trailer + #get
+- [x] /privacy (draft banner), 404
+- [x] Icon script + generated favicon.svg, favicon-32.png, apple-touch-icon.png, og.png
+- [x] `public/_headers`
+- [x] README, CLAUDE.md, AGENTS.md
+- [x] `npm run build` and `astro check` clean
+
+## Built
+
+Files: `astro.config.mjs`, `package.json`, `tsconfig.json`, `.nvmrc`, `.gitignore`, `README.md`, `CLAUDE.md`, `AGENTS.md`; `src/data/links.ts`; `src/layouts/Layout.astro`; `src/components/` (`Mark`, `Wordmark`, `Smiley`, `DinoMark`, `Header`, `Footer`, `StoreButtons`, `story/` Book, Moon, Waves, Avatar, Devices); `src/styles/global.css` and `story.css`; `src/scripts/story.ts` and `trailer.ts`; `src/pages/` index, dino, privacy, 404; `public/_headers`, `public/story-boot.js` plus the four generated icons; `scripts/make-icons.mjs` and `scripts/fonts/` (Fraunces 72pt Bold and Light static TTFs from undercasetype/Fraunces, OFL.txt).
+
+Judgment calls:
+- Fraunces static TTFs come from the upstream undercasetype/Fraunces repo: google/fonts only ships the variable font.
+- `public/story-boot.js` (a tiny external script in the head of /dino) adds `story--animated` to `<html>` before first paint, so there is no flash of the stacked layout; `story.ts` keeps the class in sync, including on preference change. The class is on `<html>`, not the track.
+- The brief gives no Dino mark, so `DinoMark.astro` is a purple tile with an open book and the pink smiley; used in the /dino bar, trailer poster and #get.
+- The About heading "About." and the 404/privacy copy are not in the brief; the privacy draft discloses Cloudflare hosting, Google Fonts and the YouTube click-through.
+- The /dino stage pins 60px below the top (under the sticky bar) and is `100svh - 60px`, so the whole scene is visible; `story.ts` offsets progress by that pin distance.
+- Book cover tiles are 2-up on phones, 3-up above that.
+- The trailer poster is a local gradient (no `i.ytimg.com` request); the CSP still allows that host as the decision lists it.
+
+Checks: `npm run build` clean (4 pages), `astro check` 0/0/0, `npm run icons` gives favicon-32 32x32, apple-touch-icon 180x180, og 1200x630. Lighthouse mobile (local preview, uncompressed): / perf 0.90 a11y 1.00; /dino 0.93 / 1.00; /privacy 0.93 / 1.00; /404 0.94 / 1.00. No horizontal overflow at 375px on all four pages. Reduced-motion emulation on /dino: six stacked scenes, stage `position: static`. Hosts contacted on load: self, fonts.googleapis.com, fonts.gstatic.com.
 
 ## Verification
 - Build passes, `astro check` 0 errors.

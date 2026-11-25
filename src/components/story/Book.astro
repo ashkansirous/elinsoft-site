@@ -1,0 +1,38 @@
+---
+// The purple picture book. Its state is driven by the CSS variables --open and --turn (0..1) set by the surrounding scene.
+// Styles live in src/styles/story.css.
+import Smiley from '../Smiley.astro';
+---
+
+<div class="book" aria-hidden="true">
+  <div class="book__inner">
+    <div class="book__pages">
+      <span class="book__hill"></span>
+      <span class="book__star"></span>
+    </div>
+    <div class="book__turn">
+      <div class="book__face book__face--front">
+        <span class="book__line"></span>
+        <span class="book__line"></span>
+        <span class="book__line book__line--short"></span>
+        <span class="book__line"></span>
+      </div>
+      <div class="book__face book__face--back">
+        <span class="book__blob"></span>
+        <span class="book__line"></span>
+        <span class="book__line book__line--short"></span>
+      </div>
+    </div>
+    <div class="book__cover">
+      <div class="book__face book__face--cover">
+        <Smiley class="book__smiley" />
+        <span class="book__ribbon"></span>
+      </div>
+      <div class="book__face book__face--inside">
+        <span class="book__line"></span>
+        <span class="book__line"></span>
+        <span class="book__line book__line--short"></span>
+      </div>
+    </div>
+  </div>
+</div>

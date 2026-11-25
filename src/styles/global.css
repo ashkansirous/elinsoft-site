@@ -1,0 +1,302 @@
+/* Elinsoft brand tokens, reset and shared building blocks. */
+
+:root {
+  --purple: #7b4dff;
+  --pink: #ff4fa3;
+  --blue: #2f6bff;
+  --blush: #ffe8f3;
+  --sun: #ffc22e;
+  --ink: #14161b;
+  --paper: #fffdf9;
+  --lilac: #f3edff;
+  --aqua: #e1f6fa;
+  --cream: #fff4da;
+  --teal: #0ba5c7;
+
+  /* Darker purple for small text on light tints (the brand fill stays #7b4dff). */
+  --purple-text: #5a2fd8;
+  --ink-soft: #3c4049;
+
+  --night: #1b1530;
+  --dusk: #2a1f4d;
+  --dusk-light: #3b2a6b;
+
+  --font-heading: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --gutter: 20px;
+  --max: 1120px;
+  --radius-panel: 28px;
+  --radius-card: 24px;
+  --shadow-soft: 0 18px 40px -22px rgba(20, 22, 27, 0.35);
+
+  --focus: var(--ink);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 32px;
+    --radius-panel: 36px;
+    --radius-card: 28px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 76px;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.on-dark {
+  --focus: var(--sun);
+}
+
+/* Utilities */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--max) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -80px;
+  z-index: 100;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip:focus {
+  top: 12px;
+  --focus: var(--sun);
+}
+
+/* The full stop that ends every brand heading. */
+.stop {
+  color: var(--blue);
+}
+
+.eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 52px;
+  padding: 0 26px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -12px rgba(20, 22, 27, 0.55);
+}
+
+.btn--primary {
+  background: var(--purple);
+  color: #fff;
+}
+
+.btn--sun {
+  background: var(--sun);
+  color: var(--ink);
+}
+
+.btn--ghost {
+  border-color: var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: #fff;
+}
+
+.btn--light {
+  background: #fff;
+  color: var(--ink);
+}
+
+.btn--off {
+  background: rgba(20, 22, 27, 0.08);
+  color: var(--ink-soft);
+  cursor: default;
+}
+
+.btn--off:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Panels */
+
+.panel {
+  border-radius: var(--radius-panel);
+  padding: 32px 24px;
+}
+
+@media (min-width: 640px) {
+  .panel {
+    padding: 56px 48px;
+  }
+}
+
+.section {
+  padding-block: 56px;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-block: 88px;
+  }
+}
+
+.section__title {
+  font-size: clamp(2.1rem, 6vw, 3.25rem);
+  margin-bottom: 12px;
+}
+
+.section__lead {
+  max-width: 38rem;
+  font-size: 1.125rem;
+  color: var(--ink-soft);
+}
+
+/* Page content for text pages (privacy, 404) */
+
+.prose {
+  max-width: 44rem;
+}
+
+.prose h2 {
+  font-size: 1.6rem;
+  margin: 2.2rem 0 0.6rem;
+}
+
+.prose p,
+.prose li {
+  color: var(--ink-soft);
+  font-size: 1.0625rem;
+}
+
+.prose p + p {
+  margin-top: 0.9rem;
+}
+
+.prose ul {
+  margin-top: 0.6rem;
+  padding-left: 1.2rem;
+  list-style: disc;
+}
+
+.prose a {
+  color: var(--purple-text);
+  text-underline-offset: 3px;
+}

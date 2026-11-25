@@ -1,0 +1,68 @@
+---
+import Wordmark from './Wordmark.astro';
+import { company } from '../data/links';
+---
+
+<footer class="site-footer on-dark" id="contact">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <Wordmark class="site-footer__wordmark" />
+      <p>
+        <a class="site-footer__mail" href={`mailto:${company.email}`}>{company.email}</a>
+      </p>
+    </div>
+    <div class="site-footer__legal">
+      <p>{company.name} &middot; Registered in {company.jurisdiction}</p>
+      <p>Company number {company.number}</p>
+      <p>Registered office: {company.registeredOffice}</p>
+      <p><a href="/privacy">Privacy</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: #fff;
+    padding-block: 56px 48px;
+  }
+
+  .site-footer__inner {
+    display: grid;
+    gap: 32px;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__inner {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .site-footer :global(.site-footer__wordmark) {
+    font-size: 2.25rem;
+  }
+
+  .site-footer__brand p {
+    margin-top: 14px;
+  }
+
+  .site-footer__mail,
+  .site-footer__legal a {
+    color: #fff;
+    text-underline-offset: 3px;
+  }
+
+  .site-footer__legal {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.9375rem;
+  }
+
+  .site-footer__legal p + p {
+    margin-top: 4px;
+  }
+
+  .site-footer__legal p:last-child {
+    margin-top: 14px;
+  }
+</style>

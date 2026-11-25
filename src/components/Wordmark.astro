@@ -1,0 +1,56 @@
+---
+// "Elinsoft." with a drawn smiley for the dot of the i.
+// Fine-tune the smiley with CSS variables on any ancestor (or this root):
+//   --smiley-y     vertical offset of the smiley, measured from the top of the letter box
+//   --smiley-size  width and height of the smiley (default 0.3em)
+// Size comes from the parent's font-size.
+import Smiley from './Smiley.astro';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={['wordmark', className]} role="img" aria-label="Elinsoft">
+  <span class="wordmark__elin" aria-hidden="true">El<span class="wordmark__i">&#305;<Smiley class="wordmark__smiley" /></span>n</span><span class="wordmark__soft" aria-hidden="true">soft</span><span class="wordmark__dot" aria-hidden="true">.</span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-block;
+    font-family: var(--font-heading);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    --smiley-size: 0.3em;
+    --smiley-y: 0.04em;
+  }
+
+  .wordmark__elin {
+    font-weight: 700;
+  }
+
+  .wordmark__soft {
+    font-weight: 300;
+  }
+
+  .wordmark__dot {
+    font-weight: 700;
+    color: #2f6bff;
+  }
+
+  .wordmark__i {
+    position: relative;
+    display: inline-block;
+  }
+
+  .wordmark__i :global(.wordmark__smiley) {
+    position: absolute;
+    left: 50%;
+    top: var(--smiley-y);
+    width: var(--smiley-size);
+    height: var(--smiley-size);
+    transform: translateX(-50%);
+  }
+</style>
