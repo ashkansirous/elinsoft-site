@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// Static output for Cloudflare Pages. `format: 'file'` builds dino.html so the
+// Static output for a Cloudflare static-assets Worker. `format: 'file'` builds dino.html so the
 // page is served at /dino exactly (no trailing slash, no redirect).
 export default defineConfig({
   site: 'https://elinsoft.co.uk',

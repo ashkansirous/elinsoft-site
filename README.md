@@ -40,7 +40,7 @@ To move the smiley on the "i" of the wordmark, set `--smiley-y` (and `--smiley-s
 
 The site is the static-assets-only Worker `elinsoft-site` (`wrangler.jsonc`). Cloudflare Workers Builds is connected to this repository: every merge to `main` runs `npm run build` then `npx wrangler deploy`. Never deploy from a shell.
 
-- `wrangler.jsonc` serves `dist/`, uses `404.html` for unknown paths, and serves `dino.html` at `/dino`.
+- `wrangler.jsonc` serves `dist/` and uses `404.html` for unknown paths; the default `html_handling` (`auto-trailing-slash`) serves `dino.html` at `/dino`. `workers_dev` and `preview_urls` are off on purpose, so the site lives only on its own domain.
 - Custom Domains `elinsoft.co.uk` and `www.elinsoft.co.uk` are declared in `wrangler.jsonc`; the deploy creates their DNS records.
 - `www` to root: a Single Redirect rule in the `elinsoft.co.uk` zone sends `https://www.elinsoft.co.uk/*` to `https://elinsoft.co.uk/${1}` with 301 (rules run before the Worker).
 - Check a config change without deploying: `npm run build && npx wrangler deploy --dry-run`.
