@@ -120,3 +120,7 @@ Checks: `npm run build` clean (4 pages), `astro check` 0/0/0, `npm run icons` gi
 - Reduced-motion emulation on /dino shows six stacked scenes, no sticky.
 - Lighthouse mobile: performance ≥ 90, accessibility ≥ 90 on / and /dino.
 - No requests to any host but self and Google Fonts on load (YouTube only after clicking play, when an ID is set).
+
+## Review
+- Pass 1 (high): ../reviews/pass1-high.md. Fixed 1-8, 10. Skipped #9 (no ESLint/CI): out of scope for now, no remote yet; Cloudflare Pages git integration only.
+- Pass 2 (medium): ../reviews/pass2-medium.md. Fixed 1, 3-10. Skipped #2 (two-column breakpoint 860px, not 768px): the brief only requires stacking on phones.

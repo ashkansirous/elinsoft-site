@@ -11,12 +11,13 @@ function mountPlayer(button: HTMLButtonElement): boolean {
   if (!VIDEO_ID_PATTERN.test(id)) return false;
   if (!button.closest<HTMLElement>('[data-trailer]')) return false;
   const iframe = document.createElement('iframe');
-  iframe.src = `${EMBED_ORIGIN}${id}?autoplay=1`;
+  iframe.src = `${EMBED_ORIGIN}${id}?autoplay=1&rel=0&playsinline=1`;
   iframe.title = 'Dino trailer';
   iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
   iframe.allowFullscreen = true;
   iframe.referrerPolicy = 'strict-origin-when-cross-origin';
   button.replaceWith(iframe);
+  // The pressed button is gone, so focus would fall back to the page; the player is where the user is heading.
   iframe.focus();
   if (import.meta.env.DEV) console.debug('[trailer] iframe mounted after click');
   return true;

@@ -93,6 +93,11 @@ html:has(body.page-dino) {
   text-align: center;
 }
 
+/* Focused by script after a dot click; the heading is not interactive, so it gets no ring. */
+.scene__title:focus {
+  outline: none;
+}
+
 .scene__title {
   font-size: clamp(2.1rem, 8vw, 3.75rem);
 }
@@ -307,7 +312,7 @@ html.story--animated .story__dots {
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.story__dots a[aria-current='true']::before {
+.story__dots a[aria-current='step']::before {
   background: var(--sun);
   transform: scale(1.4);
 }
@@ -881,6 +886,22 @@ html.story--animated .avatar__rec {
 
 button.trailer__poster {
   cursor: pointer;
+}
+
+/* The frame clips an outside outline, so the focus ring sits inside the poster. */
+button.trailer__poster:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: -6px;
+  border-radius: var(--radius-card);
+}
+
+/* No trailer yet: nothing here is clickable, so it must not look it. */
+div.trailer__poster {
+  cursor: default;
+}
+
+div.trailer__poster .trailer__caption {
+  opacity: 0.75;
 }
 
 button.trailer__poster:hover .trailer__play {

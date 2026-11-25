@@ -3,6 +3,10 @@
 
 const ANIMATED_CLASS = 'story--animated';
 const READY_ATTRIBUTE = 'data-story-ready';
+/** Set by public/story-boot.js when its timeout gave up on this script; permanent for the page view. */
+const FALLBACK_ATTRIBUTE = 'data-story-fallback';
+/** How long a dot click waits for the scroll to reach its scene before the focus request is dropped. */
+const FOCUS_WAIT_MS = 2500;
 const SCENE_COUNT = 6;
 /** Half-width of the cross-fade at each scene boundary, in scenes. */
 const FADE = 0.12;
@@ -38,6 +42,9 @@ class Story {
   private lastScroll = -1;
   private activeIndex = -1;
   private visible = false;
+  private modeApplied: boolean | null = null;
+  private pendingFocus = -1;
+  private pendingFocusTimer = 0;
   private observers: { resize: ResizeObserver; intersect: IntersectionObserver } | null = null;
 
   constructor(track: HTMLElement) {
@@ -51,21 +58,56 @@ class Story {
 
   start(): void {
     this.motion.addEventListener('change', () => this.syncMode());
+    window.addEventListener('hashchange', () => this.scrollToHashScene());
     this.dots.forEach((dot, index) => dot.addEventListener('click', (event) => this.onDotClick(event, index)));
     this.syncMode();
-    if (this.motion.matches) this.scrollToHashScene();
+    this.scrollToHashScene();
+  }
+
+  /** Animated only when motion is allowed and public/story-boot.js has not given up on this page view. */
+  private wantsAnimation(): boolean {
+    return this.motion.matches && !document.documentElement.hasAttribute(FALLBACK_ATTRIBUTE);
   }
 
   private syncMode(): void {
-    document.documentElement.classList.toggle(ANIMATED_CLASS, this.motion.matches);
-    if (this.motion.matches) this.enable();
+    const root = document.documentElement;
+    const animate = this.wantsAnimation();
+    const changed = this.modeApplied !== null && this.modeApplied !== animate;
+    const sceneIndex = changed ? this.currentSceneIndex() : -1;
+    this.modeApplied = animate;
+    root.classList.toggle(ANIMATED_CLASS, animate);
+    if (animate) this.enable();
     else this.disable();
+    if (sceneIndex >= 0) this.restoreScene(sceneIndex, animate);
     // Tells public/story-boot.js the script is running, so its timeout does not fall back to the stacked layout.
-    document.documentElement.setAttribute(READY_ATTRIBUTE, '');
+    root.setAttribute(READY_ATTRIBUTE, '');
+  }
+
+  /** The scene the reader is on, or -1 when the story is off screen. Read before the layout changes. */
+  private currentSceneIndex(): number {
+    if (this.modeApplied === false) return this.stackedSceneIndex();
+    return this.activeIndex;
+  }
+
+  private stackedSceneIndex(): number {
+    const rect = this.track.getBoundingClientRect();
+    if (rect.bottom < 0 || rect.top > window.innerHeight) return -1;
+    const middle = window.innerHeight / 2;
+    let found = 0;
+    this.scenes.forEach((scene, index) => {
+      if (scene.getBoundingClientRect().top <= middle) found = index;
+    });
+    return found;
+  }
+
+  private restoreScene(index: number, animated: boolean): void {
+    if (animated) this.scrollToScene(index, 'auto');
+    else this.scenes[index].scrollIntoView({ block: 'start', behavior: 'auto' });
   }
 
   /** In animated mode a `#scene-N` link points at an absolutely positioned scene, so map it onto the story's scroll. */
   private scrollToHashScene(): void {
+    if (this.modeApplied !== true) return;
     const match = /^#scene-(\d+)$/.exec(window.location.hash);
     const index = match ? Number(match[1]) - 1 : -1;
     if (index >= 0 && index < SCENE_COUNT) this.scrollToScene(index, 'auto');
@@ -153,19 +195,38 @@ class Story {
     if (index === this.activeIndex) return;
     this.activeIndex = index;
     this.dots.forEach((dot, i) => {
-      if (i === index) dot.setAttribute('aria-current', 'true');
+      if (i === index) dot.setAttribute('aria-current', 'step');
       else dot.removeAttribute('aria-current');
     });
+    // Scenes other than the active one are invisible in animated mode, so keep them out of the tab order and reader.
+    this.scenes.forEach((scene, i) => scene.toggleAttribute('inert', i !== index));
+    if (this.pendingFocus === index) this.focusSceneHeading(index);
+  }
+
+  private focusSceneHeading(index: number): void {
+    window.clearTimeout(this.pendingFocusTimer);
+    this.pendingFocus = -1;
+    const heading = this.scenes[index].querySelector<HTMLElement>('.scene__title');
+    if (!heading) return;
+    heading.setAttribute('tabindex', '-1');
+    heading.focus({ preventScroll: true });
   }
 
   private onDotClick(event: MouseEvent, index: number): void {
-    if (!document.documentElement.classList.contains(ANIMATED_CLASS)) return;
+    if (this.modeApplied !== true) return;
     event.preventDefault();
+    history.replaceState(null, '', `#scene-${index + 1}`);
+    // The target scene is inert until the scroll reaches it, so focus moves when it becomes the active scene.
+    this.pendingFocus = index;
+    window.clearTimeout(this.pendingFocusTimer);
+    this.pendingFocusTimer = window.setTimeout(() => (this.pendingFocus = -1), FOCUS_WAIT_MS);
+    if (index === this.activeIndex) this.focusSceneHeading(index);
     this.scrollToScene(index, 'smooth');
   }
 
   private clearInlineStyles(): void {
     this.scenes.forEach((scene) => {
+      scene.removeAttribute('inert');
       scene.style.removeProperty('opacity');
       scene.style.removeProperty('--sp');
     });
