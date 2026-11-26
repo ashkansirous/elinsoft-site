@@ -384,6 +384,18 @@ html.story--animated .scene__hint {
   background: #fff4da;
 }
 
+/* The real pictures fill their page or cover; the shapes keep the old page proportions (3:4). */
+.book picture,
+.book img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.book img {
+  object-fit: cover;
+}
+
 .book__turn {
   transform-style: preserve-3d;
   transform: rotateY(calc(var(--turn, 0) * -180deg)) translateZ(1px);
@@ -397,10 +409,7 @@ html.story--animated .scene__hint {
 .book__face {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--bw) * 0.06);
-  padding: calc(var(--bw) * 0.22) calc(var(--bw) * 0.14);
+  overflow: hidden;
   border-radius: 0 12px 12px 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -415,69 +424,20 @@ html.story--animated .scene__hint {
   transform: rotateY(180deg);
 }
 
-.book__face--cover {
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(90deg, #5a2fd8 0 7%, var(--purple) 7%);
-}
-
+/* The inside of the open cover (the real back cover picture), so the left half is never blank before the page turns. */
 .book__face--inside {
-  background: var(--lilac);
+  background: #fff4da;
+  border-radius: 12px 0 0 12px;
   transform: rotateY(180deg);
 }
 
-.book__line {
-  display: block;
-  height: calc(var(--bw) * 0.045);
-  border-radius: 999px;
-  background: rgba(123, 77, 255, 0.22);
-}
-
-.book__line--short {
-  width: 60%;
-}
-
-.book__blob {
-  display: block;
-  height: calc(var(--bw) * 0.5);
-  margin-bottom: calc(var(--bw) * 0.04);
-  border-radius: 50% 50% 14px 14px;
-  background: var(--aqua);
-}
-
-.book__hill {
+/* A soft shade down the spine edge of the real cover. */
+.book__face--cover::after {
+  content: '';
   position: absolute;
-  left: -15%;
-  bottom: -14%;
-  width: 130%;
-  height: 46%;
-  border-radius: 50% 50% 0 0;
-  background: var(--aqua);
-}
-
-.book__star {
-  position: absolute;
-  top: 14%;
-  right: 16%;
-  width: 22%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--sun);
-}
-
-.book__smiley {
-  width: 46%;
-  height: auto;
-  margin-top: -10%;
-}
-
-.book__ribbon {
-  position: absolute;
-  left: 7%;
-  right: 0;
-  bottom: 14%;
-  height: 7%;
-  background: var(--sun);
+  inset: 0 auto 0 0;
+  width: 7%;
+  background: linear-gradient(90deg, rgba(20, 22, 27, 0.35), rgba(20, 22, 27, 0));
 }
 
 /* Moon */
@@ -655,50 +615,27 @@ html.story--animated .waves__ring:nth-child(4) {
   transform: translateX(calc((1 - var(--in, 1)) * 140%));
 }
 
-.avatar__disc {
-  position: relative;
-  width: calc(var(--bw) * 0.95);
-  aspect-ratio: 1;
+/* A real app screen in a phone frame (scene 4 and scene 5). Width comes from the frame's own --phone-w. */
+.phone {
+  --phone-w: calc(var(--bw) * 0.9);
+  width: var(--phone-w);
+  aspect-ratio: 1080 / 1823;
   overflow: hidden;
-  border-radius: 50%;
-  background: var(--pink);
-  box-shadow: 0 14px 28px -14px rgba(255, 79, 163, 0.9);
-}
-
-.avatar__head {
-  position: absolute;
-  left: 50%;
-  top: 22%;
-  width: 34%;
-  aspect-ratio: 1;
-  border-radius: 50%;
+  border: 3px solid var(--ink);
+  border-radius: calc(var(--phone-w) * 0.14);
   background: #fff;
-  transform: translateX(-50%);
+  box-shadow: 0 14px 28px -14px rgba(20, 22, 27, 0.6);
 }
 
-.avatar__body {
-  position: absolute;
-  left: 50%;
-  top: 62%;
-  width: 62%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #fff;
-  transform: translateX(-50%);
+.phone picture,
+.phone img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.avatar__mic {
-  position: absolute;
-  right: -4%;
-  top: 14%;
-  display: grid;
-  place-items: center;
-  width: calc(var(--bw) * 0.4);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--sun);
-  box-shadow: 0 8px 16px -8px rgba(20, 22, 27, 0.6);
-  transform: translateX(calc((1 - var(--in, 1)) * 60%));
+.phone img {
+  object-fit: cover;
 }
 
 .avatar__label {
@@ -779,14 +716,78 @@ html.story--animated .avatar__rec {
   --k: 3;
 }
 
-.device svg {
-  max-width: none;
-  width: auto;
+.phone--device {
+  --phone-w: calc(var(--dh) * 0.592);
+}
+
+.tablet,
+.laptop__screen {
+  overflow: hidden;
+  background: #fff;
+}
+
+.tablet {
+  height: calc(var(--dh) * 0.8);
+  aspect-ratio: 4 / 3;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+}
+
+.tablet picture,
+.tablet img,
+.laptop__screen picture,
+.laptop__screen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tablet img,
+.laptop__screen img {
+  object-fit: cover;
+}
+
+.laptop,
+.speaker {
+  position: relative;
+}
+
+.laptop {
+  height: calc(var(--dh) * 0.8);
+}
+
+.speaker {
   height: var(--dh);
 }
 
-.device--2 svg {
-  height: calc(var(--dh) * 0.8);
+.laptop svg,
+.speaker svg {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+
+/* The real Windows screen sits inside the outline's screen rectangle (x 18..114, y 4..68 of 132 x 92). */
+.laptop__screen {
+  position: absolute;
+  left: 13.6%;
+  top: 4.3%;
+  width: 72.7%;
+  height: 69.6%;
+  border-radius: 4px;
+}
+
+.speaker__icon {
+  position: absolute;
+  left: 50%;
+  top: 37.5%;
+  transform: translate(-50%, -50%);
+}
+
+.speaker__icon img {
+  width: calc(var(--dh) * 0.42);
+  height: auto;
 }
 
 .device__label {
@@ -812,7 +813,14 @@ html.story--animated .avatar__rec {
 
 /* Scene 6 */
 
-.scene--6 .dino-mark svg {
+/* Scene 1: the real Dino icon takes the book's place beside the moon. */
+.scene--1 .dino-mark img {
+  width: calc(var(--bw) * 1.3);
+  height: auto;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.35));
+}
+
+.scene--6 .dino-mark img {
   width: calc(var(--bw) * 1.5);
   height: auto;
   transform: rotate(calc(-12deg + var(--sp) * 10deg));
@@ -854,16 +862,34 @@ html.story--animated .avatar__rec {
   text-align: center;
 }
 
-.trailer__poster .dino-mark {
+/* The real book spread fills the frame; a dark wash keeps the play button and caption readable on it. */
+.trailer__art,
+.trailer__art picture,
+.trailer__art img {
   position: absolute;
-  left: 6%;
-  bottom: 8%;
-  opacity: 0.9;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.trailer__poster .dino-mark svg {
-  width: clamp(48px, 10vw, 84px);
-  height: auto;
+.trailer__art img {
+  object-fit: cover;
+}
+
+.trailer__art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(27, 21, 48, 0.35), rgba(27, 21, 48, 0.7));
+}
+
+.trailer__poster {
+  z-index: 1;
+}
+
+.trailer__caption {
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .trailer__play {
@@ -939,7 +965,7 @@ button.trailer__poster:hover .trailer__play {
   justify-items: start;
 }
 
-.get .dino-mark svg {
+.get .dino-mark img {
   border-radius: 20px;
   box-shadow: 0 0 0 4px #fff;
 }
@@ -975,6 +1001,81 @@ button.trailer__poster:hover .trailer__play {
 .paper p {
   margin: 10px 0 20px;
   color: var(--ink-soft);
+}
+
+/* The real covers of the printed books, small. */
+.paper__covers {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 20px;
+}
+
+.paper__covers li {
+  flex: 0 1 96px;
+  min-width: 0;
+}
+
+.paper__covers picture,
+.paper__covers img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.paper__covers img {
+  border-radius: 8px;
+  box-shadow: 0 8px 16px -8px rgba(20, 22, 27, 0.5);
+}
+
+/* Tap to hear: a small button that plays the real narration clip of the page on screen. */
+.listen {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 16px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sun);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  --focus: var(--sun);
+}
+
+.listen__note {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+}
+
+.listen__note[hidden] {
+  display: none;
+}
+
+.listen[hidden] {
+  display: none;
+}
+
+.listen:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.listen__icon {
+  width: 14px;
+  height: 14px;
+}
+
+.listen__icon--stop,
+.listen.is-playing .listen__icon--play {
+  display: none;
+}
+
+.listen.is-playing .listen__icon--stop {
+  display: block;
 }
 
 .get__credit {

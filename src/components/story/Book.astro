@@ -1,38 +1,46 @@
 ---
-// The purple picture book. Its state is driven by the CSS variables --open and --turn (0..1) set by the surrounding scene.
-// Styles live in src/styles/story.css.
-import Smiley from '../Smiley.astro';
+// The real picture book (X Marks the Treasure!): its cover, then two real pages turning. Its state is driven by the CSS
+// variables --open and --turn (0..1) set by the surrounding scene. Styles live in src/styles/story.css.
+// Only the scene that introduces the book describes its pictures; the copies in later scenes are decorative (alt="").
+import { Picture } from 'astro:assets';
+import { storyBook } from '../../data/assets';
+
+interface Props {
+  decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
+
+const pictureProps = {
+  widths: [200, 400, 600],
+  sizes: '(min-width: 860px) 250px, 190px',
+  formats: ['avif', 'webp'] as ('avif' | 'webp')[],
+  fallbackFormat: 'jpg' as const,
+  loading: 'lazy' as const,
+  decoding: 'async' as const,
+};
+const alt = (text: string) => (decorative ? '' : text);
 ---
 
-<div class="book" aria-hidden="true">
+<div class="book" aria-hidden={decorative ? 'true' : undefined}>
   <div class="book__inner">
-    <div class="book__pages">
-      <span class="book__hill"></span>
-      <span class="book__star"></span>
+    <div class="book__cover">
+      <div class="book__face book__face--cover">
+        <Picture src={storyBook.cover.src} alt={alt(storyBook.cover.alt)} {...pictureProps} />
+      </div>
+      <div class="book__face book__face--inside">
+        <Picture src={storyBook.inside.src} alt={storyBook.inside.alt} {...pictureProps} />
+      </div>
     </div>
     <div class="book__turn">
       <div class="book__face book__face--front">
-        <span class="book__line"></span>
-        <span class="book__line"></span>
-        <span class="book__line book__line--short"></span>
-        <span class="book__line"></span>
+        <Picture src={storyBook.turnFront.src} alt={alt(storyBook.turnFront.alt)} {...pictureProps} />
       </div>
       <div class="book__face book__face--back">
-        <span class="book__blob"></span>
-        <span class="book__line"></span>
-        <span class="book__line book__line--short"></span>
+        <Picture src={storyBook.turnBack.src} alt={alt(storyBook.turnBack.alt)} {...pictureProps} />
       </div>
     </div>
-    <div class="book__cover">
-      <div class="book__face book__face--cover">
-        <Smiley class="book__smiley" />
-        <span class="book__ribbon"></span>
-      </div>
-      <div class="book__face book__face--inside">
-        <span class="book__line"></span>
-        <span class="book__line"></span>
-        <span class="book__line book__line--short"></span>
-      </div>
+    <div class="book__pages">
+      <Picture src={storyBook.reading.src} alt={alt(storyBook.reading.alt)} {...pictureProps} />
     </div>
   </div>
 </div>

@@ -22,13 +22,10 @@ Pages build to `index.html`, `dino.html`, `privacy.html` and `404.html` (`build.
 
 Everything still missing is in **`src/data/links.ts`**, each marked `TODO(owner)`:
 
-- Dino store URLs: App Store, Google Play, Microsoft Store
-- Read The Stupid Text store URLs: Microsoft Store, Google Play
 - Amazon link for the paperbacks (until set the button says "Paperbacks coming soon" and is not a link)
-- YouTube trailer ID (until set the trailer area shows "Trailer coming soon")
-- Book cover images (`public/` path) and app screenshots
+- YouTube trailer ID (until set the trailer area shows "Trailer coming soon", over a real book spread)
 
-A store with no URL shows a muted "Coming soon" button, never a dead link.
+The store links, app icons, book covers, page pictures, app screenshots and the narration clip are real and already in place (`src/assets/`, `public/audio/`; their sources are listed in `docs/plan/slices/02-real-content.md`). A store with no URL shows a muted "Coming soon" button, never a dead link.
 
 ## Icons
 
