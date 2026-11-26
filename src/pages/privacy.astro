@@ -1,12 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { company } from '../data/links';
+import { organizationLd } from '../data/seo';
 ---
 
 <Layout
   title="Privacy | Elinsoft"
   description="How the elinsoft.co.uk website treats your data: no tracking, no analytics, no cookies."
   path="/privacy"
+  jsonLd={[organizationLd()]}
 >
   <div class="container page">
     <p class="draft" role="note"><strong>Draft.</strong> This page is a draft for the owner to review and has not been approved yet.</p>

@@ -6,6 +6,7 @@ import Smiley from '../components/Smiley.astro';
 import StoreButtons from '../components/StoreButtons.astro';
 import { Picture } from 'astro:assets';
 import { bookCovers, rtstIconArt } from '../data/assets';
+import { organizationLd, webSiteLd, dinoAppLd, rtstAppLd } from '../data/seo';
 
 const platforms = ['iPhone & iPad', 'Android', 'Windows', 'Sonos'];
 ---
@@ -14,6 +15,7 @@ const platforms = ['iPhone & iPad', 'Android', 'Windows', 'Sonos'];
   title="Elinsoft: apps and stories for families"
   description="Elinsoft is a small London studio making bedtime story apps, reading tools and children's books."
   path="/"
+  jsonLd={[organizationLd(), webSiteLd(), dinoAppLd(), rtstAppLd()]}
 >
   <div class="container hero-wrap">
     <section class="hero panel" aria-labelledby="hero-title">

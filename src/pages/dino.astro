@@ -11,6 +11,7 @@ import Devices from '../components/story/Devices.astro';
 import { Picture } from 'astro:assets';
 import { paperbacksUrl, trailerYouTubeId, company } from '../data/links';
 import { bookCovers, dinoIconArt, trailerPoster } from '../data/assets';
+import { organizationLd, dinoAppLd } from '../data/seo';
 
 const scenes = [
   { title: "It's bedtime.", body: 'The lights go down. The stories come out.' },
@@ -27,6 +28,9 @@ const scenes = [
   description="Dino: Kids Books & Stories. Bedtime tales in your voice: picture books read aloud, with recordings from your own family."
   path="/dino"
   bodyClass="page-dino"
+  ogImage="/og-dino.png"
+  ogImageAlt="Dino, a smiling green dinosaur with round glasses, next to the cover of X Marks the Treasure, with the words Dino: Kids Books & Stories on a pale pink background"
+  jsonLd={[organizationLd(), dinoAppLd()]}
 >
   <script is:inline slot="head" src="/story-boot.js"></script>
 

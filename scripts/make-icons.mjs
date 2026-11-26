@@ -1,4 +1,4 @@
-// Generates the brand icons into public/: favicon.svg, favicon-32.png, apple-touch-icon.png, og.png.
+// Generates the brand icons into public/: favicon.svg, favicon-32.png, apple-touch-icon.png, og.png, og-dino.png.
 // Run with `npm run icons`. Outputs are committed, so this is a dev-only tool (opentype.js + resvg).
 // The Fraunces glyphs are converted to SVG paths here, so no icon depends on a web font being installed.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -120,6 +120,47 @@ function ogSvg() {
 `;
 }
 
+/** Lays out one line of Fraunces Bold as a path with the brand's -0.02em letter spacing. */
+function textPath(text, size, x, baseline, fill) {
+  let cursor = x;
+  const spacing = -0.02 * size;
+  let d = '';
+  for (const char of text) {
+    d += bold.getPath(char, cursor, baseline, size).toPathData(2);
+    cursor += glyphAdvance(bold, char, size) + spacing;
+  }
+  return `<path d="${d}" fill="${fill}"/>`;
+}
+
+function dataUri(file, mime) {
+  return `data:${mime};base64,${readFileSync(join(root, 'src', 'assets', file)).toString('base64')}`;
+}
+
+/** /dino share picture: the real Dino icon and the real X Marks the Treasure! cover (embedded as data URIs) beside the app name. */
+function ogDinoSvg() {
+  const coverH = 450;
+  const coverW = Math.round((coverH * 600) / 804);
+  const coverX = 1200 - 80 - coverW;
+  const coverY = (630 - coverH) / 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <clipPath id="icon"><rect x="80" y="90" width="190" height="190" rx="44"/></clipPath>
+    <clipPath id="cover"><rect x="${coverX}" y="${coverY}" width="${coverW}" height="${coverH}" rx="14"/></clipPath>
+  </defs>
+  <rect width="1200" height="630" fill="${COLORS.blush}"/>
+  <circle cx="1090" cy="70" r="190" fill="${COLORS.lilac}"/>
+  <circle cx="90" cy="600" r="130" fill="${COLORS.aqua}"/>
+  <circle cx="1010" cy="580" r="34" fill="${COLORS.sun}"/>
+  <circle cx="400" cy="120" r="16" fill="${COLORS.pink}" fill-opacity="0.85"/>
+  <image x="80" y="90" width="190" height="190" clip-path="url(#icon)" xlink:href="${dataUri('dino-icon.png', 'image/png')}"/>
+  ${textPath('Dino:', 150, 74, 430, COLORS.ink)}
+  ${textPath('Kids Books', 86, 78, 520, COLORS.purple)}
+  ${textPath('& Stories', 86, 78, 600, COLORS.purple)}
+  <image x="${coverX}" y="${coverY}" width="${coverW}" height="${coverH}" clip-path="url(#cover)" xlink:href="${dataUri('cover-x-marks-the-treasure.jpg', 'image/jpeg')}"/>
+</svg>
+`;
+}
+
 function renderPng(svg, width) {
   return new Resvg(svg, { fitTo: { mode: 'width', value: width } }).render().asPng();
 }
@@ -129,4 +170,5 @@ writeFileSync(join(publicDir, 'favicon.svg'), faviconSvg());
 writeFileSync(join(publicDir, 'favicon-32.png'), renderPng(faviconSvg(), 32));
 writeFileSync(join(publicDir, 'apple-touch-icon.png'), renderPng(appleTouchSvg(), 180));
 writeFileSync(join(publicDir, 'og.png'), renderPng(ogSvg(), 1200));
+writeFileSync(join(publicDir, 'og-dino.png'), renderPng(ogDinoSvg(), 1200));
 console.log('Icons written to public/');

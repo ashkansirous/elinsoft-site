@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Smiley from '../components/Smiley.astro';
+import { organizationLd } from '../data/seo';
 ---
 
 <Layout
@@ -8,6 +9,7 @@ import Smiley from '../components/Smiley.astro';
   description="That page could not be found."
   path="/404"
   noindex
+  jsonLd={[organizationLd()]}
 >
   <div class="container lost">
     <section class="lost__panel panel">
