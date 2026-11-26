@@ -12,6 +12,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "test": "node --test \"tests/*.test.ts\"",
     "icons": "node scripts/make-icons.mjs",
     "astro": "astro"
   },

@@ -1,0 +1,75 @@
+---
+---
+
+<div id="consent-banner" class="consent" role="region" aria-label="Cookie choices" tabindex="-1" hidden>
+  <p class="consent__text">
+    We would like to use Google Analytics cookies to see how the site is used. They stay off unless you accept.{' '}
+    <a href="/privacy">Privacy</a>
+  </p>
+  <div class="consent__actions">
+    <button type="button" class="btn btn--ghost consent__btn" data-consent="accept">Accept analytics</button>
+    <button type="button" class="btn btn--ghost consent__btn" data-consent="reject">Reject</button>
+  </div>
+</div>
+
+<script>
+  import { initConsent } from '../scripts/analytics';
+  initConsent();
+</script>
+
+<style is:global>
+  body.has-consent-banner {
+    padding-bottom: var(--consent-banner-height, 0);
+  }
+</style>
+
+<style>
+  .consent {
+    position: fixed;
+    inset: auto 12px 12px 12px;
+    z-index: 50;
+    display: grid;
+    gap: 12px;
+    max-width: 44rem;
+    margin-inline: auto;
+    padding: 16px 18px;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: var(--shadow-soft);
+    font-size: 0.9375rem;
+  }
+
+  .consent[hidden] {
+    display: none;
+  }
+
+  .consent__text a {
+    color: var(--purple-text);
+    text-underline-offset: 3px;
+  }
+
+  .consent__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .consent__btn {
+    padding-inline: 12px;
+    background: var(--paper);
+  }
+
+  @media (min-width: 768px) {
+    .consent {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .consent__btn {
+      padding-inline: 22px;
+    }
+  }
+</style>

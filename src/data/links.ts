@@ -35,6 +35,9 @@ export const paperbacksUrl: Url = null;
 // TODO(owner): YouTube video ID of the Dino trailer (only the ID, for example "abc123XYZ_-", not the full URL). No trailer video is uploaded yet; until then the poster says "Trailer coming soon".
 export const trailerYouTubeId: string | null = null;
 
+/** Google Analytics 4 measurement ID (property "elinsoft.co.uk"). Loaded only after the visitor accepts analytics. */
+export const gaMeasurementId = 'G-RC7G1W7KSS';
+
 /** Company facts (checked against the owner's "Company Facts" doc). No other address may appear on the site. */
 export const company = {
   name: 'ELINSOFT LTD',
