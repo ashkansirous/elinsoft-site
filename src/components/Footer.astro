@@ -15,7 +15,7 @@ import { company } from '../data/links';
       <p>{company.name} &middot; Registered in {company.jurisdiction}</p>
       <p>Company number {company.number}</p>
       <p>Registered office: {company.registeredOffice}</p>
-      <p><a href="/privacy">Privacy</a></p>
+      <p><a href="/privacy">Privacy</a> &middot; <button type="button" class="site-footer__link" data-cookie-settings>Cookie settings</button></p>
     </div>
   </div>
 </footer>
@@ -51,6 +51,17 @@ import { company } from '../data/links';
   .site-footer__legal a {
     color: #fff;
     text-underline-offset: 3px;
+  }
+
+  .site-footer__link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #fff;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
   }
 
   .site-footer__legal {

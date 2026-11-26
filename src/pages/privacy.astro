@@ -6,7 +6,7 @@ import { organizationLd } from '../data/seo';
 
 <Layout
   title="Privacy | Elinsoft"
-  description="How the elinsoft.co.uk website treats your data: no tracking, no analytics, no cookies."
+  description="How the elinsoft.co.uk website treats your data: Google Analytics only if you accept, no advertising, no forms."
   path="/privacy"
   jsonLd={[organizationLd()]}
 >
@@ -22,10 +22,27 @@ import { organizationLd } from '../data/seo';
 
       <h2>The short version</h2>
       <ul>
-        <li>No tracking, no analytics and no advertising scripts.</li>
-        <li>This site sets no cookies. If you press play on the trailer, YouTube may store data in your browser.</li>
+        <li>Google Analytics runs only if you press "Accept analytics". If you press "Reject", or do not choose, nothing is sent to Google Analytics.</li>
+        <li>No advertising scripts.</li>
+        <li>If you press play on the trailer, YouTube may store data in your browser.</li>
         <li>No forms, accounts or sign-ups: we do not ask you for any personal information on this site.</li>
       </ul>
+
+      <h2>Analytics and cookies</h2>
+      <p>
+        If you press "Accept analytics", we use Google Analytics 4 to see how the site is used. Our lawful basis is your
+        consent. It collects the pages you view, how you arrived, your device and browser type, your approximate location
+        (derived from your IP address) and the time you spend on a page.
+      </p>
+      <p>
+        It sets the cookies <code>_ga</code> and <code>_ga_*</code>, which last for up to 2 years. Google acts as our
+        processor and may process data outside the UK. We do not run advertising, so all advertising consent settings stay
+        denied.
+      </p>
+      <p>
+        You can change your mind at any time with the "Cookie settings" link in the footer of every page. Choosing "Reject"
+        stops analytics and deletes the cookies it set.
+      </p>
 
       <h2>What other services see</h2>
       <p>
@@ -52,7 +69,7 @@ import { organizationLd } from '../data/seo';
       </p>
       <p>You can also contact us to ask about your data. If you are in the UK, you can complain to the Information Commissioner's Office (ico.org.uk).</p>
 
-      <p class="page__date">Last updated: 25 November 2026 (draft).</p>
+      <p class="page__date">Last updated: 26 November 2026 (draft).</p>
     </div>
   </div>
 </Layout>
