@@ -1,6 +1,6 @@
 # Slice 3: search and share metadata
 
-**Status:** in progress (branch `feat/seo`)
+**Status:** done
 **Touches:** `src/layouts/Layout.astro`, `src/pages/*.astro`, `src/pages/sitemap.xml.ts` (new), `public/robots.txt` (new), `scripts/make-icons.mjs`, `public/og-dino.png` (new), `src/data/seo.ts` (new), `public/_headers` (only if needed), this file.
 
 ## Ask
@@ -13,7 +13,7 @@ Audit of the live site (2026-11-26, read with curl): every page has a title, des
 2. No structured data (JSON-LD) for the company or the apps.
 3. `/dino` shares the same Elinsoft wordmark picture as every page.
 4. No `og:image:alt` / `twitter:image:alt`.
-5. Plain `http://` is served without a redirect to https (zone setting "Always Use HTTPS" is off). Done by the coordinator through the Cloudflare API, not in this branch.
+5. Plain `http://` is served without a redirect to https (zone setting "Always Use HTTPS" is off). Done by the coordinator through the Cloudflare API, not in this branch. "Always Use HTTPS" was turned on in the Cloudflare dashboard on 2026-11-26 (the owner said "ok"; API tokens lack Zone Settings Edit). After that, `http://elinsoft.co.uk/dino` and `http://www.elinsoft.co.uk/privacy?x=1` answered 301 to https (checked with curl).
 
 ## Decisions
 
@@ -46,7 +46,9 @@ Audit of the live site (2026-11-26, read with curl): every page has a title, des
 
 Local (2026-11-26): `npm run build` and `npx astro check` 0/0/0; sitemap has the three URLs; JSON-LD parses on all four pages; `/dino` names `og-dino.png` with size and alt; `dist/` served by `wrangler dev` with the real CSP showed no console error or warning on `/` and `/dino`.
 
-Planned:
+Live (2026-11-26): `sitemap.xml` lists the three URLs; `robots.txt` names it; JSON-LD parses (home: Organization, WebSite, 2 SoftwareApplication; /dino: Organization, SoftwareApplication; privacy: Organization); /dino serves `og-dino.png` 1200x630 with alt; `og:image:alt` on every page.
+
+Planned (all done, see above):
 
 - `npm run build`, `npx astro check` 0/0/0.
 - Built `dist/`: `sitemap.xml` valid XML with exactly the three URLs; `robots.txt` present; every page's JSON-LD parses with `JSON.parse` and holds only the fields above; `/dino` head names `og-dino.png` with width and height.
