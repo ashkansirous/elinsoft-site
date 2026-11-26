@@ -10,7 +10,8 @@ The company site for ELINSOFT LTD: `elinsoft.co.uk/` (home), `/dino` (scroll sto
 
 ## Map
 
-- `src/data/links.ts`: every placeholder (store URLs, Amazon link, YouTube ID, covers, screenshots) and the company facts
+- `src/data/links.ts`: store URLs, the two remaining placeholders (Amazon link, YouTube ID) and the company facts
+- `src/assets/` + `src/data/assets.ts`: the real pictures (app icons, covers, book pages, app screenshots), all rendered through `<Picture>` (AVIF/WebP + fallback); `public/audio/` holds the one narration clip (`listen.ts`, tap only)
 - `src/layouts/Layout.astro`: head, meta, skip link, header slot (default `Header`), footer
 - `src/components/`: `Mark`, `Wordmark` (`--smiley-y`, `--smiley-size`), `Smiley`, `DinoMark`, `Header`, `Footer`, `StoreButtons`; `story/` holds the /dino visuals
 - `src/styles/global.css` (brand tokens), `src/styles/story.css` (/dino only)

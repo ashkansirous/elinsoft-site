@@ -1,43 +1,69 @@
 ---
-// Device outlines for scene 5. Each appears in turn, driven by --sp. Labels are real text.
+// Devices for scene 5. Each appears in turn, driven by --sp. The iPhone, iPad and Windows frames show real Dino screens;
+// the Sonos speaker stays an outline with the Dino icon. Labels are real text.
+import { Picture } from 'astro:assets';
+import DinoMark from '../DinoMark.astro';
+import { deviceShots } from '../../data/assets';
+
+const shared = {
+  formats: ['avif', 'webp'] as ('avif' | 'webp')[],
+  fallbackFormat: 'jpg' as const,
+  loading: 'lazy' as const,
+  decoding: 'async' as const,
+};
 ---
 
 <ul class="devices">
   <li class="device device--0">
-    <svg viewBox="0 0 60 112" focusable="false" aria-hidden="true">
-      <rect x="2" y="2" width="56" height="108" rx="12" fill="#fff" stroke="#14161B" stroke-width="3"></rect>
-      <rect x="22" y="8" width="16" height="5" rx="2.5" fill="#14161B"></rect>
-      <circle cx="30" cy="36" r="9" fill="#FF4FA3"></circle>
-      <rect x="12" y="56" width="36" height="5" rx="2.5" fill="#E1F6FA"></rect>
-      <rect x="12" y="66" width="26" height="5" rx="2.5" fill="#E1F6FA"></rect>
-    </svg>
+    <div class="phone phone--device">
+      <Picture
+        src={deviceShots.iphone.src}
+        alt={deviceShots.iphone.alt}
+        widths={[160, 320, 540]}
+        sizes="(min-width: 860px) 110px, 80px"
+        {...shared}
+      />
+    </div>
     <span class="device__label">iPhone</span>
   </li>
   <li class="device device--1">
-    <svg viewBox="0 0 96 128" focusable="false" aria-hidden="true">
-      <rect x="2" y="2" width="92" height="124" rx="10" fill="#fff" stroke="#14161B" stroke-width="3"></rect>
-      <circle cx="48" cy="48" r="16" fill="#7B4DFF"></circle>
-      <rect x="18" y="80" width="60" height="5" rx="2.5" fill="#F3EDFF"></rect>
-      <rect x="18" y="91" width="42" height="5" rx="2.5" fill="#F3EDFF"></rect>
-      <circle cx="48" cy="115" r="3" fill="#14161B"></circle>
-    </svg>
+    <div class="tablet">
+      <Picture
+        src={deviceShots.ipad.src}
+        alt={deviceShots.ipad.alt}
+        widths={[240, 480, 960]}
+        sizes="(min-width: 860px) 190px, 130px"
+        {...shared}
+      />
+    </div>
     <span class="device__label">iPad</span>
   </li>
   <li class="device device--2">
-    <svg viewBox="0 0 132 92" focusable="false" aria-hidden="true">
-      <rect x="18" y="4" width="96" height="64" rx="6" fill="#fff" stroke="#14161B" stroke-width="3"></rect>
-      <path d="M54 22h11v10H54zM67 22h11v10H67zM54 34h11v10H54zM67 34h11v10H67z" fill="#0BA5C7"></path>
-      <path d="M4 76h124l-8 12H12z" fill="#fff" stroke="#14161B" stroke-width="3" stroke-linejoin="round"></path>
-    </svg>
+    <div class="laptop">
+      <svg viewBox="0 0 132 92" focusable="false" aria-hidden="true">
+        <rect x="18" y="4" width="96" height="64" rx="6" fill="#fff" stroke="#14161B" stroke-width="3"></rect>
+        <path d="M4 76h124l-8 12H12z" fill="#fff" stroke="#14161B" stroke-width="3" stroke-linejoin="round"></path>
+      </svg>
+      <div class="laptop__screen">
+        <Picture
+          src={deviceShots.windows.src}
+          alt={deviceShots.windows.alt}
+          widths={[240, 480, 960]}
+          sizes="(min-width: 860px) 190px, 130px"
+          {...shared}
+        />
+      </div>
+    </div>
     <span class="device__label">Windows laptop</span>
   </li>
   <li class="device device--3">
-    <svg viewBox="0 0 70 112" focusable="false" aria-hidden="true">
-      <rect x="2" y="2" width="66" height="108" rx="16" fill="#fff" stroke="#14161B" stroke-width="3"></rect>
-      <circle cx="35" cy="42" r="20" fill="#FFF4DA" stroke="#14161B" stroke-width="3"></circle>
-      <circle cx="35" cy="42" r="7" fill="#14161B"></circle>
-      <circle cx="35" cy="86" r="9" fill="#FFC22E"></circle>
-    </svg>
+    <div class="speaker">
+      <svg viewBox="0 0 70 112" focusable="false" aria-hidden="true">
+        <rect x="2" y="2" width="66" height="108" rx="16" fill="#fff" stroke="#14161B" stroke-width="3"></rect>
+        <circle cx="35" cy="86" r="9" fill="#FFC22E"></circle>
+      </svg>
+      <DinoMark size={40} class="speaker__icon" sizes="40px" />
+    </div>
     <span class="device__label">Sonos speaker</span>
   </li>
 </ul>

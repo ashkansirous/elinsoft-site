@@ -6,9 +6,11 @@ import StoreButtons from '../components/StoreButtons.astro';
 import Book from '../components/story/Book.astro';
 import Moon from '../components/story/Moon.astro';
 import Waves from '../components/story/Waves.astro';
-import Avatar from '../components/story/Avatar.astro';
+import RecordPhone from '../components/story/RecordPhone.astro';
 import Devices from '../components/story/Devices.astro';
+import { Picture } from 'astro:assets';
 import { paperbacksUrl, trailerYouTubeId, company } from '../data/links';
+import { bookCovers, dinoIconArt, trailerPoster } from '../data/assets';
 
 const scenes = [
   { title: "It's bedtime.", body: 'The lights go down. The stories come out.' },
@@ -31,7 +33,7 @@ const scenes = [
   <header slot="header" class="dino-bar">
     <div class="container dino-bar__inner">
       <a class="dino-bar__brand" href="#main" aria-label="Dino: Kids Books and Stories, top of page">
-        <DinoMark size={36} />
+        <DinoMark size={36} eager />
         <span>Dino</span>
       </a>
       <a class="btn btn--sun" href="#get">Get the app</a>
@@ -60,7 +62,7 @@ const scenes = [
         <div class="scene scene--1" id="scene-1" data-scene>
           <div class="scene__visual">
             <Moon />
-            <Book />
+            <DinoMark size={320} eager priority alt={dinoIconArt.alt} sizes="(min-width: 860px) 325px, 160px" />
           </div>
           <div class="scene__text" data-text>
             <h2 class="scene__title">{scenes[0].title}</h2>
@@ -84,19 +86,30 @@ const scenes = [
           <div class="scene__visual">
             <Waves />
             <Moon />
-            <Book />
+            <Book decorative />
           </div>
           <div class="scene__text" data-text>
             <h2 class="scene__title">{scenes[2].title}</h2>
             <p class="scene__body">{scenes[2].body}</p>
+            <button class="listen" type="button" data-listen hidden>
+              <svg class="listen__icon listen__icon--play" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                <path d="M6 3.5v17l15-8.5z" fill="currentColor" />
+              </svg>
+              <svg class="listen__icon listen__icon--stop" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                <rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor" />
+              </svg>
+              <span data-listen-label>Tap to hear</span>
+            </button>
+            <p class="listen__note" role="status" data-listen-note hidden></p>
+            <audio data-listen-audio preload="none" src="/audio/x-marks-ahoy.m4a"></audio>
           </div>
         </div>
 
         <div class="scene scene--4" id="scene-4" data-scene>
           <div class="scene__visual">
             <Waves />
-            <Book />
-            <Avatar />
+            <Book decorative />
+            <RecordPhone />
           </div>
           <div class="scene__text" data-text>
             <h2 class="scene__title">{scenes[3].title}</h2>
@@ -106,7 +119,7 @@ const scenes = [
 
         <div class="scene scene--5" id="scene-5" data-scene>
           <div class="scene__visual">
-            <Book />
+            <Book decorative />
             <Devices />
           </div>
           <div class="scene__text" data-text>
@@ -117,7 +130,7 @@ const scenes = [
 
         <div class="scene scene--6 on-dark" id="scene-6" data-scene>
           <div class="scene__visual">
-            <DinoMark size={160} />
+            <DinoMark size={160} sizes="(min-width: 860px) 375px, 180px" />
           </div>
           <div class="scene__text" data-text>
             <h2 class="scene__title">{scenes[5].title}</h2>
@@ -132,10 +145,21 @@ const scenes = [
     <div class="container">
       <h2 class="trailer__title" id="trailer-title">See Dino in action<span class="stop">.</span></h2>
       <div class="trailer__frame on-dark" data-trailer>
+        <div class="trailer__art">
+          <Picture
+            src={trailerPoster.src}
+            alt={trailerPoster.alt}
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 1160px) 1120px, calc(100vw - 40px)"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
         {
           trailerYouTubeId ? (
             <button class="trailer__poster" type="button" data-trailer-play data-video-id={trailerYouTubeId}>
-              <DinoMark size={60} />
               <span class="trailer__play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false">
                   <path d="M6 3.5v17l15-8.5z" fill="currentColor" />
@@ -145,7 +169,6 @@ const scenes = [
             </button>
           ) : (
             <div class="trailer__poster">
-              <DinoMark size={60} />
               <span class="trailer__play trailer__play--off" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false">
                   <path d="M6 3.5v17l15-8.5z" fill="currentColor" />
@@ -170,6 +193,24 @@ const scenes = [
       <div class="paper">
         <h3 class="paper__title">Prefer real paper?</h3>
         <p>The same stories are printed as picture books you can hold, for bedtime without a screen.</p>
+        <ul class="paper__covers" aria-label="The printed books">
+          {
+            bookCovers.map((book) => (
+              <li>
+                <Picture
+                  src={book.src}
+                  alt={book.alt}
+                  widths={[96, 192, 384]}
+                  sizes="96px"
+                  formats={['avif', 'webp']}
+                  fallbackFormat="jpg"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </li>
+            ))
+          }
+        </ul>
         {
           paperbacksUrl ? (
             <a class="btn btn--primary" href={paperbacksUrl} rel="noopener">
@@ -189,6 +230,7 @@ const scenes = [
 
   <script>
     import '../scripts/story';
+    import '../scripts/listen';
     import '../scripts/trailer';
   </script>
 </Layout>

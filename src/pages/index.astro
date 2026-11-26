@@ -4,7 +4,8 @@ import Mark from '../components/Mark.astro';
 import DinoMark from '../components/DinoMark.astro';
 import Smiley from '../components/Smiley.astro';
 import StoreButtons from '../components/StoreButtons.astro';
-import { bookCovers } from '../data/links';
+import { Picture } from 'astro:assets';
+import { bookCovers, rtstIconArt } from '../data/assets';
 
 const platforms = ['iPhone & iPad', 'Android', 'Windows', 'Sonos'];
 ---
@@ -55,12 +56,19 @@ const platforms = ['iPhone & iPad', 'Android', 'Windows', 'Sonos'];
         </article>
 
         <article class="card card--aqua">
-          <span class="card__icon" aria-hidden="true">
-            <svg width="56" height="56" viewBox="0 0 64 64" focusable="false">
-              <rect width="64" height="64" rx="16" fill="#0BA5C7"></rect>
-              <path d="M18 24h28M18 32h28M18 40h16" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"></path>
-              <path d="M44 38l8 5-8 5z" fill="#FFC22E"></path>
-            </svg>
+          <span class="card__icon">
+            <Picture
+              src={rtstIconArt.src}
+              alt=""
+              width={56}
+              height={56}
+              widths={[56, 112, 192]}
+              sizes="56px"
+              formats={['avif', 'webp']}
+              fallbackFormat="png"
+              loading="lazy"
+              decoding="async"
+            />
           </span>
           <h3 class="card__title">Read The Stupid Text</h3>
           <p>Reads any text out loud — on screen, or from a photo. Natural voices that work fully offline.</p>
@@ -99,11 +107,16 @@ const platforms = ['iPhone & iPad', 'Android', 'Windows', 'Sonos'];
         {
           bookCovers.map((book) => (
             <li class={`cover cover--${book.tint}`}>
-              {book.image ? (
-                <img src={book.image} alt={book.alt} width="400" height="400" loading="lazy" />
-              ) : (
-                <span class="cover__title">{book.title}</span>
-              )}
+              <Picture
+                src={book.src}
+                alt={book.alt}
+                widths={[200, 400, 600]}
+                sizes="(min-width: 1160px) 360px, (min-width: 640px) 33vw, 50vw"
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                loading="lazy"
+                decoding="async"
+              />
             </li>
           ))
         }
@@ -410,7 +423,7 @@ const platforms = ['iPhone & iPad', 'Android', 'Windows', 'Sonos'];
     filter: drop-shadow(0 20px 26px rgba(20, 22, 27, 0.35));
   }
 
-  .teaser__art :global(.dino-mark svg) {
+  .teaser__art :global(.dino-mark img) {
     border-radius: 48px;
     box-shadow: 0 0 0 6px #fff;
   }
@@ -445,10 +458,30 @@ const platforms = ['iPhone & iPad', 'Android', 'Windows', 'Sonos'];
     overflow: hidden;
   }
 
-  .cover img {
+  .cover :global(picture) {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+  }
+
+  /* The whole cover shows on the tinted tile, so no title is cut. */
+  .cover :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+
+  .card__icon {
+    display: inline-flex;
+  }
+
+  .card__icon :global(img) {
+    display: block;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
   }
 
   .cover--cream {
@@ -467,14 +500,6 @@ const platforms = ['iPhone & iPad', 'Android', 'Windows', 'Sonos'];
     background: var(--blush);
   }
 
-  .cover__title {
-    font-family: var(--font-heading);
-    font-size: 1.75rem;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    max-width: 11ch;
-  }
 
   /* About */
 

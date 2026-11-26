@@ -1,0 +1,22 @@
+---
+// "Grandma, recording": the real record-your-voice screen of the app inside a phone frame. The label is real text.
+// (The old pink avatar and microphone overlay no longer fits next to a real screen, so it is gone.)
+import { Picture } from 'astro:assets';
+import { deviceShots } from '../../data/assets';
+---
+
+<div class="avatar">
+  <div class="phone">
+    <Picture
+      src={deviceShots.phoneRecord.src}
+      alt={deviceShots.phoneRecord.alt}
+      widths={[160, 320, 540]}
+      sizes="(min-width: 860px) 230px, 110px"
+      formats={['avif', 'webp']}
+      fallbackFormat="jpg"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <span class="avatar__label"><span class="avatar__rec" aria-hidden="true"></span>Grandma, recording</span>
+</div>
