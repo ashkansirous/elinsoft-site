@@ -37,7 +37,9 @@ Audit of the live site (2026-11-26, read with curl): every page has a title, des
 
 ## From review
 
-- Pass 1 (high), `reviews/pass9-seo-high.md`: applied 1 (the `<` escape was a no-op), 3 (favicon.svg line endings), 5 (address guard). Skipped 2 (`sameAs` is what this slice decided) and 4 (CLAUDE.md/README lines, for the index pass: `npm run icons` also writes `og-dino.png`; Map line for `src/data/seo.ts`).
+- Pass 1 (high), `reviews/pass9-seo-high.md`: applied 1 (the `<` escape was a no-op), 3 (favicon.svg line endings), 5 (address guard). 
+  - Skipped 2 (reviews/pass9-seo-high.md): "The slice Decisions say" so, Decision 3 chose it.
+  - Skipped 4 (reviews/pass9-seo-high.md): "Fix in the update-docs index pass" (`npm run icons` also writes `og-dino.png`; Map line for `src/data/seo.ts`)
 - Pass 2 (medium), `reviews/pass10-seo-medium.md`: four nits, none applied (empty fields only if every store link were null; hand-typed sitemap list; RTST url; no cache rule for sitemap/robots).
 
 ## Verification
