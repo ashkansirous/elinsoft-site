@@ -82,6 +82,7 @@ function wire(button: HTMLButtonElement): void {
       return;
     }
     showNote(parts, '');
+    if (audio.error) audio.load();
     current = 'loading';
     window.clearTimeout(loadingTimer);
     loadingTimer = window.setTimeout(() => {
