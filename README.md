@@ -42,7 +42,8 @@ The site is the static-assets-only Worker `elinsoft-site` (`wrangler.jsonc`). Cl
 
 - `wrangler.jsonc` serves `dist/` and uses `404.html` for unknown paths; the default `html_handling` (`auto-trailing-slash`) serves `dino.html` at `/dino`. `workers_dev` and `preview_urls` are off on purpose, so the site lives only on its own domain.
 - Custom Domains `elinsoft.co.uk` and `www.elinsoft.co.uk` are declared in `wrangler.jsonc`; the deploy creates their DNS records.
-- `www` to root: a Single Redirect rule in the `elinsoft.co.uk` zone sends `https://www.elinsoft.co.uk/*` to `https://elinsoft.co.uk/${1}` with 301 (rules run before the Worker).
+- `www` to root: the Single Redirect rule "www to elinsoft.co.uk" in the zone matches `http.host eq "www.elinsoft.co.uk"` and sends a 301 to `concat("https://elinsoft.co.uk", http.request.uri.path)` with the query string kept (rules run before the Worker).
+- Node version for the build comes from `.nvmrc` (24).
 - Check a config change without deploying: `npm run build && npx wrangler deploy --dry-run`.
 
 `public/_headers` ships the security headers (CSP, HSTS, `nosniff`, referrer policy, frame denial, permissions policy), a long immutable cache for the hashed files in `/_astro/*`, and a revalidating cache for HTML. The CSP allows only this site, Google Fonts (stylesheet and font files) and youtube-nocookie.com frames; if you add a new third-party host, add it there too.
