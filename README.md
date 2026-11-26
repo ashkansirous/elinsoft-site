@@ -1,6 +1,6 @@
 # elinsoft-site
 
-Website for ELINSOFT LTD at **elinsoft.co.uk**. Astro 7 (static output), plain CSS, a little vanilla TypeScript. No tracking, no cookies.
+Website for ELINSOFT LTD at **elinsoft.co.uk**. Astro 7 (static output), plain CSS, a little vanilla TypeScript. Google Analytics 4 runs only after a visitor presses "Accept analytics"; no ads, no other tracking.
 
 Pages: `/` (company home), `/dino` (Dino scroll story), `/privacy` (draft), and a 404.
 
@@ -14,9 +14,16 @@ npm run dev        # http://localhost:4321
 npm run build      # static site in dist/
 npm run preview    # serve dist/ locally
 npx astro check    # type and template check
+npm test           # analytics gate tests (node --test)
 ```
 
 Pages build to `index.html`, `dino.html`, `privacy.html` and `404.html` (`build.format: 'file'`), so the Worker serves `/dino` and `/privacy` without a trailing slash.
+
+## Where things live
+
+- `src/data/seo.ts` (JSON-LD, sitemap paths), `src/pages/sitemap.xml.ts`, `public/robots.txt`
+- `src/components/ConsentBanner.astro`, `src/scripts/analytics.ts` (GA4 after consent) and `analytics-gate.ts` (only real visitors on elinsoft.co.uk count)
+- `tests/`: the analytics gate tests (`npm test`)
 
 ## Placeholders to fill
 
@@ -29,7 +36,7 @@ The store links, app icons, book covers, page pictures, app screenshots and the 
 
 ## Icons
 
-`npm run icons` rebuilds `public/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png` and `og.png`. It turns the Fraunces "E" and the wordmark into SVG paths (`opentype.js`) and rasterises them (`@resvg/resvg-js`), using the font files in `scripts/fonts/` (SIL Open Font Licence, `OFL.txt` alongside). Both packages are dev dependencies; the outputs are committed.
+`npm run icons` rebuilds `public/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `og.png` and `og-dino.png`. It turns the Fraunces "E" and the wordmark into SVG paths (`opentype.js`) and rasterises them (`@resvg/resvg-js`), using the font files in `scripts/fonts/` (SIL Open Font Licence, `OFL.txt` alongside). Both packages are dev dependencies; the outputs are committed.
 
 To move the smiley on the "i" of the wordmark, set `--smiley-y` (and `--smiley-size`) on the wordmark or any parent; see `src/components/Wordmark.astro`.
 

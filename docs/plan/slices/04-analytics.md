@@ -1,6 +1,6 @@
 # Slice 4: Google Analytics 4 with consent
 
-**Status:** in progress (branch `feat/analytics`)
+**Status:** done (PR #6, 9cd0483; checked live 2026-11-26)
 **Touches:** `src/layouts/Layout.astro`, `src/components/ConsentBanner.astro` (new), `src/components/Footer.astro`, `src/scripts/analytics.ts` (new), `src/scripts/analytics-gate.ts` (new), `tests/analytics-gate.test.ts` (new), `package.json` (a `test` script), `src/data/links.ts` (measurement ID constant), `src/pages/privacy.astro`, `public/_headers`, this file.
 
 ## Owner's brief (2026-11-26, pasted verbatim; it ends mid-sentence)
@@ -83,3 +83,14 @@ Planned:
 - `npm test` (gate cases: production host, www, localhost, preview `*.workers.dev`, webdriver true, dev build, exception), `npm run build`, `npx astro check` 0/0/0.
 - `dist/` served with `wrangler dev` (real CSP), Playwright at 375 and 1440 on `/`, `/dino`, `/privacy`: banner appears; Reject: no request to any Google analytics host, banner gone after reload; Accept on localhost: the gate's `not sent: host` debug line and still no Google request; Cookie settings reopens the banner; no CSP console error. Playwright also blocks `*google-analytics.com` and `googletagmanager.com` at the network layer.
 - The Accept path that really loads gtag.js can only run on the production host; it is checked live after merge in a normal (non-automated) browser by the coordinator, reading the Network panel or the GA4 Realtime report.
+
+Live (2026-11-26, https://elinsoft.co.uk): run in Playwright with `navigator.webdriver` overridden and every collect request aborted, so no test hit reached the property (instead of the plain browser planned above, which would have counted a test visit).
+- At 375 and 1440 the banner shows on first load with no Google request.
+- Reject sends nothing, and the banner stays hidden after reload.
+- Accept:
+  - loads `gtag/js?id=G-RC7G1W7KSS` (200);
+  - sets `_ga` and `_ga_RC7G1W7KSS`;
+  - attempts `region1.google-analytics.com/g/collect`, which the CSP allows.
+- Cookie settings, then Reject: sets `ga-disable` and removes the cookies.
+- No CSP violation on /, /dino or /privacy.
+- The privacy page names Google Analytics and elinsoftuk@gmail.com.
