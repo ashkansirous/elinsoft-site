@@ -149,9 +149,11 @@ Result 2026-11-26 (local preview, headless Chromium, after both review passes): 
 33 loaded pictures; only localhost and Google Fonts requested, no audio before a tap; tap plays, second tap and
 scrolling away stop. Lighthouse mobile: `/` performance 95, accessibility 100; `/dino` 96 / 100.
 
-## Not yet verified
-
-- [session] The live site after the Workers Builds deploy (run by this session after the merge).
+Live, 2026-11-26 (merge 280b76d, Workers Builds `completed success`, live after about 90 s): Playwright against
+https://elinsoft.co.uk at 375 and 1440 plus reduced motion: no overflow, all visible pictures load (6 on `/`, 33 on
+`/dino`), the five store hrefs exact, footer elinsoftuk@gmail.com, only elinsoft.co.uk and Google Fonts requested,
+tap-to-hear plays on tap, stops on a second tap and on scrolling away. CSP carries `media-src 'self'`; the clip is
+served as `audio/mp4`. Status: built, reviewed, live and verified.
 
 ## Built
 
