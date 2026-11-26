@@ -1,0 +1,20 @@
+{
+  // Static-assets-only Worker: Cloudflare serves dist/ directly, so public/_headers applies.
+  // Deployed only by Workers Builds on a merge to main (build: npm run build, deploy: npx wrangler deploy).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "elinsoft-site",
+  "compatibility_date": "2026-11-25",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  // Custom Domains: Cloudflare creates the DNS records. www is redirected to the apex by a
+  // Single Redirect rule in the elinsoft.co.uk zone (rules run before the Worker).
+  "routes": [
+    { "pattern": "elinsoft.co.uk", "custom_domain": true },
+    { "pattern": "www.elinsoft.co.uk", "custom_domain": true }
+  ],
+  "workers_dev": false,
+  "preview_urls": false
+}

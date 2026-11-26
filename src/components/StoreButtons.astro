@@ -1,0 +1,118 @@
+---
+// Store buttons for one app. A store with no URL yet renders as a muted, non-link "coming soon" button.
+import { dinoStores, rtstStores, type Url } from '../data/links';
+
+interface Props {
+  app: 'dino' | 'rtst';
+  /** "light" = white buttons for dark panels, "dark" = ink buttons for light cards. */
+  tone?: 'light' | 'dark';
+}
+const { app, tone = 'dark' } = Astro.props;
+
+interface Item {
+  small: string;
+  name: string;
+  url: Url;
+}
+
+const dinoItems: Item[] = [
+  { small: 'Download on the', name: 'App Store', url: dinoStores.appStore },
+  { small: 'Get it on', name: 'Google Play', url: dinoStores.googlePlay },
+  { small: 'Get it from', name: 'Microsoft Store', url: dinoStores.microsoftStore },
+];
+const rtstItems: Item[] = [
+  { small: '', name: 'Get it from Microsoft', url: rtstStores.microsoftStore },
+  { small: '', name: 'Get it on Google Play', url: rtstStores.googlePlay },
+];
+const items = app === 'dino' ? dinoItems : rtstItems;
+---
+
+<ul class:list={['stores', `stores--${tone}`]}>
+  {
+    items.map((item) => (
+      <li>
+        {item.url ? (
+          <a class="store" href={item.url} rel="noopener">
+            {item.small && <span class="store__small">{item.small}</span>}
+            <span class="store__name">{item.name}</span>
+          </a>
+        ) : (
+          <span class="store store--off" aria-disabled="true">
+            <span class="store__small">Coming soon</span>
+            <span class="store__name">{item.name}</span>
+          </span>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .stores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .store {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 56px;
+    padding: 8px 22px;
+    border-radius: 16px;
+    text-decoration: none;
+    line-height: 1.2;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  a.store:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px -12px rgba(20, 22, 27, 0.6);
+  }
+
+  .stores--dark .store {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .stores--light .store {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .store__small {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .store__name {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .stores--dark .store--off {
+    background: rgba(20, 22, 27, 0.1);
+    color: var(--ink-soft);
+  }
+
+  .stores--light .store--off {
+    /* A dark translucent fill keeps white text at 4.5:1 or better on the purple (#7B4DFF) panels. */
+    background: rgba(27, 21, 48, 0.55);
+    color: #fff;
+    border: 1.5px dashed rgba(255, 255, 255, 0.55);
+  }
+
+  .store--off {
+    cursor: default;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .store,
+    a.store:hover {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

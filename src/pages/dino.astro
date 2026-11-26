@@ -1,0 +1,194 @@
+---
+import '../styles/story.css';
+import Layout from '../layouts/Layout.astro';
+import DinoMark from '../components/DinoMark.astro';
+import StoreButtons from '../components/StoreButtons.astro';
+import Book from '../components/story/Book.astro';
+import Moon from '../components/story/Moon.astro';
+import Waves from '../components/story/Waves.astro';
+import Avatar from '../components/story/Avatar.astro';
+import Devices from '../components/story/Devices.astro';
+import { paperbacksUrl, trailerYouTubeId, company } from '../data/links';
+
+const scenes = [
+  { title: "It's bedtime.", body: 'The lights go down. The stories come out.' },
+  { title: 'A book opens.', body: 'Illustrated picture books, page by page.' },
+  { title: 'And it reads aloud.', body: 'A warm voice for every page, every night.' },
+  { title: "Or in Grandma's voice.", body: 'Record your family once — they read every night, from anywhere.' },
+  { title: 'On every screen at home.', body: 'iPhone, iPad, Android, Windows and Sonos.' },
+  { title: 'Bedtime Tales in Your Voice.', body: 'On screen, or as a real book on the shelf. Keep scrolling.' },
+];
+---
+
+<Layout
+  title="Dino: Kids Books & Stories | Elinsoft"
+  description="Dino: Kids Books & Stories. Bedtime tales in your voice: picture books read aloud, with recordings from your own family."
+  path="/dino"
+  bodyClass="page-dino"
+>
+  <script is:inline slot="head" src="/story-boot.js"></script>
+
+  <header slot="header" class="dino-bar">
+    <div class="container dino-bar__inner">
+      <a class="dino-bar__brand" href="#main" aria-label="Dino: Kids Books and Stories, top of page">
+        <DinoMark size={36} />
+        <span>Dino</span>
+      </a>
+      <a class="btn btn--sun" href="#get">Get the app</a>
+    </div>
+  </header>
+
+  <h1 class="sr-only">Dino: Kids Books &amp; Stories</h1>
+
+  <section class="story" data-story aria-label="The Dino story">
+    <div class="story__track">
+      <div class="story__stage" data-stage>
+        <div class="story__bgs" aria-hidden="true">
+          {scenes.map((_, i) => <div class={`story__bg story__bg--${i + 1}`} data-bg></div>)}
+        </div>
+
+        <ol class="story__dots on-dark" aria-label="Story progress">
+          {
+            scenes.map((scene, i) => (
+              <li>
+                <a href={`#scene-${i + 1}`} data-dot aria-label={`Scene ${i + 1}: ${scene.title}`}></a>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="scene scene--1" id="scene-1" data-scene>
+          <div class="scene__visual">
+            <Moon />
+            <Book />
+          </div>
+          <div class="scene__text" data-text>
+            <h2 class="scene__title">{scenes[0].title}</h2>
+            <p class="scene__body">{scenes[0].body}</p>
+          </div>
+          <p class="scene__hint">Scroll to start the story</p>
+        </div>
+
+        <div class="scene scene--2" id="scene-2" data-scene>
+          <div class="scene__visual">
+            <Moon />
+            <Book />
+          </div>
+          <div class="scene__text" data-text>
+            <h2 class="scene__title">{scenes[1].title}</h2>
+            <p class="scene__body">{scenes[1].body}</p>
+          </div>
+        </div>
+
+        <div class="scene scene--3" id="scene-3" data-scene>
+          <div class="scene__visual">
+            <Waves />
+            <Moon />
+            <Book />
+          </div>
+          <div class="scene__text" data-text>
+            <h2 class="scene__title">{scenes[2].title}</h2>
+            <p class="scene__body">{scenes[2].body}</p>
+          </div>
+        </div>
+
+        <div class="scene scene--4" id="scene-4" data-scene>
+          <div class="scene__visual">
+            <Waves />
+            <Book />
+            <Avatar />
+          </div>
+          <div class="scene__text" data-text>
+            <h2 class="scene__title">{scenes[3].title}</h2>
+            <p class="scene__body">{scenes[3].body}</p>
+          </div>
+        </div>
+
+        <div class="scene scene--5" id="scene-5" data-scene>
+          <div class="scene__visual">
+            <Book />
+            <Devices />
+          </div>
+          <div class="scene__text" data-text>
+            <h2 class="scene__title">{scenes[4].title}</h2>
+            <p class="scene__body">{scenes[4].body}</p>
+          </div>
+        </div>
+
+        <div class="scene scene--6 on-dark" id="scene-6" data-scene>
+          <div class="scene__visual">
+            <DinoMark size={160} />
+          </div>
+          <div class="scene__text" data-text>
+            <h2 class="scene__title">{scenes[5].title}</h2>
+            <p class="scene__body">{scenes[5].body}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trailer" aria-labelledby="trailer-title">
+    <div class="container">
+      <h2 class="trailer__title" id="trailer-title">See Dino in action<span class="stop">.</span></h2>
+      <div class="trailer__frame on-dark" data-trailer>
+        {
+          trailerYouTubeId ? (
+            <button class="trailer__poster" type="button" data-trailer-play data-video-id={trailerYouTubeId}>
+              <DinoMark size={60} />
+              <span class="trailer__play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M6 3.5v17l15-8.5z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="trailer__caption">Play the trailer</span>
+            </button>
+          ) : (
+            <div class="trailer__poster">
+              <DinoMark size={60} />
+              <span class="trailer__play trailer__play--off" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M6 3.5v17l15-8.5z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="trailer__caption">Trailer coming soon</span>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="get" class="on-dark" aria-labelledby="get-title">
+    <div class="container get">
+      <DinoMark size={72} />
+      <h2 class="get__title" id="get-title">Dino: Kids Books &amp; Stories</h2>
+      <p class="get__sub">Bedtime Tales in Your Voice</p>
+      <StoreButtons app="dino" tone="light" />
+      <p class="get__note">Also plays on Sonos speakers. Alexa coming soon.</p>
+
+      <div class="paper">
+        <h3 class="paper__title">Prefer real paper?</h3>
+        <p>The same stories are printed as picture books you can hold, for bedtime without a screen.</p>
+        {
+          paperbacksUrl ? (
+            <a class="btn btn--primary" href={paperbacksUrl} rel="noopener">
+              Buy the paperbacks
+            </a>
+          ) : (
+            <span class="btn btn--off" aria-disabled="true">
+              Paperbacks coming soon
+            </span>
+          )
+        }
+      </div>
+
+      <p class="get__credit">Made by Elinsoft &middot; {company.name}, company number {company.number}</p>
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/story';
+    import '../scripts/trailer';
+  </script>
+</Layout>

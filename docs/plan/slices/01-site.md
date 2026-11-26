@@ -1,6 +1,6 @@
 # Slice 1: elinsoft.co.uk static site (home, /dino, /privacy, 404)
 
-**Status:** in progress (2026-11-25)
+**Status:** built, reviewed and browser-checked (2026-11-25); waiting for the owner's local review before any push or deploy. Browser run: all 9 checks pass; Lighthouse mobile (local preview) / 0.95 perf, 1.00 a11y; /dino 1.00, 1.00. Home CLS 0.124 (above 0.1 "good").
 **Touches:** everything (first slice, new repo)
 
 The owner's brief below is the spec. Follow every line of it. The *Decisions* section settles what the brief leaves open; where they differ, the brief wins unless a decision says it overrides.
@@ -22,10 +22,11 @@ The owner's brief below is the spec. Follow every line of it. The *Decisions* se
 9. **Headings:** each page has one `h1`. Home: hero h1, sections h2, cards h3. /dino: h1 is the page title (visually the scene-1 heading "It's bedtime." may be the h1, or an sr-only h1 "Dino: Kids Books & Stories" then scenes as h2; pick one and keep order valid).
 10. **Focus:** visible `:focus-visible` outline (3px, ink or sun depending on background, offset 3px) on all interactive elements; skip link to `#main`.
 11. **Headers file:** `public/_headers` with: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY`, `Permissions-Policy` (camera, microphone, geolocation, interest-cohort off), `Strict-Transport-Security: max-age=31536000; includeSubDomains`, a `Content-Security-Policy` that allows self, Google Fonts (style and font), youtube-nocookie frames, `img-src 'self' data: https://i.ytimg.com`, Astro's inline scripts/styles as needed (check the build output; prefer no `unsafe-inline` for scripts by keeping scripts external, set `build.inlineStylesheets` accordingly). `/_astro/*` gets `Cache-Control: public, max-age=31536000, immutable`; HTML gets a short cache.
-12. **Cloudflare Pages:** build command `npm run build`, output `dist`, `NODE_VERSION=24` (add `.nvmrc`). No `wrangler.toml` is needed for Pages git integration; add one only if it helps `npx wrangler pages dev dist` locally. Do not deploy.
+12. **Cloudflare Pages (superseded by 16):** build command `npm run build`, output `dist`, `NODE_VERSION=24` (add `.nvmrc`). No `wrangler.toml` is needed for Pages git integration; add one only if it helps `npx wrangler pages dev dist` locally. Do not deploy.
 13. **Docs:** `README.md` (local dev, build, icons, placeholders file, Cloudflare Pages setup, custom domain elinsoft.co.uk on the root, www → root 301 via a Cloudflare Redirect Rule or Bulk Redirect, `_headers`), `CLAUDE.md` (short: commands, architecture map, rules: placeholders only in links.ts, never another address than the registered office, no tracking), `AGENTS.md` (`@CLAUDE.md`), `.gitignore`.
 14. **Company facts** (checked against the owner's Drive doc "Elinsoft – Company Facts", 2026-11-25): ELINSOFT LTD, company number 17597904, registered in England and Wales, registered office 128 City Road, London, EC1V 2NX, contact ashkan.sirous@gmail.com. No other address anywhere.
 15. **Quality bar:** Lighthouse 90+ performance and accessibility on both pages (mobile preset); no horizontal scroll at 375px; colour contrast AA (check white text on #7B4DFF and pink, ink on sun, captions on each scene colour; darken text where needed, never the brand fills).
+16. **Hosting changed by the owner (2026-11-25, after local review):** "add a repository in github. keep it public. and publish it to cloudflare set the dns to the new worker". Overrides decision 12: public GitHub repo `ashkansirous/elinsoft-site`; the site is a static-assets-only Worker `elinsoft-site` (`wrangler.jsonc`), deployed by Workers Builds on merge to `main`; Custom Domains `elinsoft.co.uk` and `www.elinsoft.co.uk` from `wrangler.jsonc`; www → root by a Single Redirect rule in the zone. The old zone rule that sent elinsoft.co.uk to sirous.uk is replaced. Done in the dashboard on 2026-11-25: deleted the two placeholder proxied A records (apex and www, 192.0.2.1) so the Custom Domains can be created, and changed the zone redirect rule to "www to elinsoft.co.uk" (host www.elinsoft.co.uk, 301 to https://elinsoft.co.uk + path, query kept).
 
 ## Owner's brief (verbatim, 2026-11-25)
 
@@ -88,16 +89,31 @@ Never invent store URLs, numbers, reviews or download counts.
 When done, run the build, check both pages at 375px and 1440px, and give me: the list of placeholders still to fill, and anything you weren't sure about.
 
 ## Work items
-- [ ] Scaffold Astro 7 project, config, tsconfig, .nvmrc, .gitignore
-- [ ] Brand tokens CSS, Mark, Wordmark, Layout, Header, Footer, StoreButtons
-- [ ] `src/data/links.ts` placeholders
-- [ ] Home page sections 1-7
-- [ ] /dino scroll story + trailer + #get
-- [ ] /privacy (draft banner), 404
-- [ ] Icon script + generated favicon.svg, favicon-32.png, apple-touch-icon.png, og.png
-- [ ] `public/_headers`
-- [ ] README, CLAUDE.md, AGENTS.md
-- [ ] `npm run build` and `astro check` clean
+- [x] Scaffold Astro 7 project, config, tsconfig, .nvmrc, .gitignore
+- [x] Brand tokens CSS, Mark, Wordmark, Layout, Header, Footer, StoreButtons
+- [x] `src/data/links.ts` placeholders
+- [x] Home page sections 1-7
+- [x] /dino scroll story + trailer + #get
+- [x] /privacy (draft banner), 404
+- [x] Icon script + generated favicon.svg, favicon-32.png, apple-touch-icon.png, og.png
+- [x] `public/_headers`
+- [x] README, CLAUDE.md, AGENTS.md
+- [x] `npm run build` and `astro check` clean
+
+## Built
+
+Files: `astro.config.mjs`, `package.json`, `tsconfig.json`, `.nvmrc`, `.gitignore`, `README.md`, `CLAUDE.md`, `AGENTS.md`; `src/data/links.ts`; `src/layouts/Layout.astro`; `src/components/` (`Mark`, `Wordmark`, `Smiley`, `DinoMark`, `Header`, `Footer`, `StoreButtons`, `story/` Book, Moon, Waves, Avatar, Devices); `src/styles/global.css` and `story.css`; `src/scripts/story.ts` and `trailer.ts`; `src/pages/` index, dino, privacy, 404; `public/_headers`, `public/story-boot.js` plus the four generated icons; `scripts/make-icons.mjs` and `scripts/fonts/` (Fraunces 72pt Bold and Light static TTFs from undercasetype/Fraunces, OFL.txt).
+
+Judgment calls:
+- Fraunces static TTFs come from the upstream undercasetype/Fraunces repo: google/fonts only ships the variable font.
+- `public/story-boot.js` (a tiny external script in the head of /dino) adds `story--animated` to `<html>` before first paint, so there is no flash of the stacked layout; `story.ts` keeps the class in sync, including on preference change. The class is on `<html>`, not the track.
+- The brief gives no Dino mark, so `DinoMark.astro` is a purple tile with an open book and the pink smiley; used in the /dino bar, trailer poster and #get.
+- The About heading "About." and the 404/privacy copy are not in the brief; the privacy draft discloses Cloudflare hosting, Google Fonts and the YouTube click-through.
+- The /dino stage pins 60px below the top (under the sticky bar) and is `100svh - 60px`, so the whole scene is visible; `story.ts` offsets progress by that pin distance.
+- Book cover tiles are 2-up on phones, 3-up above that.
+- The trailer poster is a local gradient (no `i.ytimg.com` request); the CSP still allows that host as the decision lists it.
+
+Checks: `npm run build` clean (4 pages), `astro check` 0/0/0, `npm run icons` gives favicon-32 32x32, apple-touch-icon 180x180, og 1200x630. Lighthouse mobile (local preview, uncompressed): / perf 0.90 a11y 1.00; /dino 0.93 / 1.00; /privacy 0.93 / 1.00; /404 0.94 / 1.00. No horizontal overflow at 375px on all four pages. Reduced-motion emulation on /dino: six stacked scenes, stage `position: static`. Hosts contacted on load: self, fonts.googleapis.com, fonts.gstatic.com.
 
 ## Verification
 - Build passes, `astro check` 0 errors.
@@ -105,3 +121,7 @@ When done, run the build, check both pages at 375px and 1440px, and give me: the
 - Reduced-motion emulation on /dino shows six stacked scenes, no sticky.
 - Lighthouse mobile: performance ≥ 90, accessibility ≥ 90 on / and /dino.
 - No requests to any host but self and Google Fonts on load (YouTube only after clicking play, when an ID is set).
+
+## Review
+- Pass 1 (high): ../reviews/pass1-high.md. Fixed 1-8, 10. Skipped #9 (no ESLint/CI): out of scope for now, no remote yet; Cloudflare Pages git integration only.
+- Pass 2 (medium): ../reviews/pass2-medium.md. Fixed 1, 3-10. Skipped #2 (two-column breakpoint 860px, not 768px): the brief only requires stacking on phones.

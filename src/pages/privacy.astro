@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { company } from '../data/links';
+---
+
+<Layout
+  title="Privacy | Elinsoft"
+  description="How the elinsoft.co.uk website treats your data: no tracking, no analytics, no cookies."
+  path="/privacy"
+>
+  <div class="container page">
+    <p class="draft" role="note"><strong>Draft.</strong> This page is a draft for the owner to review and has not been approved yet.</p>
+
+    <div class="prose">
+      <h1 class="page__title">Privacy<span class="stop">.</span></h1>
+      <p>
+        This page explains what happens to your data when you visit <strong>elinsoft.co.uk</strong>. It covers this website
+        only, not our apps.
+      </p>
+
+      <h2>The short version</h2>
+      <ul>
+        <li>No tracking, no analytics and no advertising scripts.</li>
+        <li>This site sets no cookies. If you press play on the trailer, YouTube may store data in your browser.</li>
+        <li>No forms, accounts or sign-ups: we do not ask you for any personal information on this site.</li>
+      </ul>
+
+      <h2>What other services see</h2>
+      <p>
+        The site is delivered by Cloudflare. Like any web host, it handles your IP address and the usual details of a
+        request (the page you asked for, your browser type) to deliver the page and keep the service secure.
+      </p>
+      <p>
+        The site's fonts (Fraunces and Inter) are loaded from Google Fonts, so your browser makes a request to Google's font
+        servers, which means Google also receives your IP address. Nothing else on the page contacts a third party when it
+        loads.
+      </p>
+      <p>
+        When a trailer video is shown on the Dino page, it only loads after you press play, and then from YouTube's
+        privacy-enhanced domain (youtube-nocookie.com).
+      </p>
+
+      <h2>Getting in touch</h2>
+      <p>
+        If you email us at <a href={`mailto:${company.email}`}>{company.email}</a>, we use your address and message only to
+        reply to you.
+      </p>
+      <p>
+        {company.name}, company number {company.number}, registered in {company.jurisdiction}. Registered office: {company.registeredOffice}.
+      </p>
+      <p>You can also contact us to ask about your data. If you are in the UK, you can complain to the Information Commissioner's Office (ico.org.uk).</p>
+
+      <p class="page__date">Last updated: 25 November 2026 (draft).</p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page {
+    padding-block: 24px 80px;
+  }
+
+  .draft {
+    max-width: 44rem;
+    margin-bottom: 28px;
+    padding: 14px 18px;
+    border: 2px dashed #b27a00;
+    border-radius: 16px;
+    background: var(--cream);
+    color: var(--ink);
+  }
+
+  .page__title {
+    margin-bottom: 18px;
+    font-size: clamp(2.4rem, 8vw, 3.75rem);
+  }
+
+  .page__date {
+    margin-top: 2rem;
+    font-size: 0.9375rem;
+  }
+</style>

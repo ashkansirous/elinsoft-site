@@ -1,0 +1,68 @@
+---
+import Mark from './Mark.astro';
+import Wordmark from './Wordmark.astro';
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__logo" href="/">
+      <Mark size={40} />
+      <Wordmark class="site-header__wordmark" />
+    </a>
+    <nav aria-label="Main">
+      <ul class="site-header__nav">
+        <li><a href="/#apps">Apps</a></li>
+        <li><a href="/#books">Books</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 10;
+    padding-block: 14px;
+  }
+
+  .site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 24px;
+  }
+
+  .site-header__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .site-header :global(.site-header__wordmark) {
+    font-size: 1.75rem;
+  }
+
+  .site-header__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 2px;
+  }
+
+  .site-header__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .site-header__nav a:hover {
+    background: rgba(255, 255, 255, 0.7);
+  }
+</style>

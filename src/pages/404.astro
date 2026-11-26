@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Smiley from '../components/Smiley.astro';
+---
+
+<Layout
+  title="Page not found | Elinsoft"
+  description="That page could not be found."
+  path="/404"
+  noindex
+>
+  <div class="container lost">
+    <section class="lost__panel panel">
+      <Smiley class="lost__smiley" />
+      <h1 class="lost__title">Page not found<span class="stop">.</span></h1>
+      <p>Sorry, we could not find that page. It may have moved, or the link may be wrong.</p>
+      <div class="lost__actions">
+        <a class="btn btn--primary" href="/">Back to the home page</a>
+        <a class="btn btn--ghost" href="/dino">Meet Dino</a>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .lost {
+    padding-block: 24px 72px;
+  }
+
+  .lost__panel {
+    display: grid;
+    justify-items: start;
+    gap: 16px;
+    background: var(--blush);
+  }
+
+  @media (min-width: 640px) {
+    .lost__panel {
+      padding-block: 80px;
+    }
+  }
+
+  .lost :global(.lost__smiley) {
+    width: 96px;
+    height: 96px;
+    transform: rotate(-8deg);
+  }
+
+  .lost__title {
+    font-size: clamp(2.4rem, 8vw, 4.25rem);
+  }
+
+  .lost__panel p {
+    max-width: 30rem;
+    font-size: 1.1875rem;
+    color: var(--ink-soft);
+  }
+
+  .lost__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+</style>
